@@ -1,4 +1,5 @@
 class node:
+
   def __init__(self, identity, label, parents, children):
     '''
     identity: int; its unique id in the graph
@@ -10,7 +11,14 @@ class node:
     self.label = label
     self.parents = parents
     self.children = children
-    
+
+  def __str__(self):
+    return ("(" + str(self.id) + ", " + self.label + ", "
+    + str(self.parents) + ", " + str(self.children) + ")")
+
+  def __repr__(self):
+    return "node"+str(self)
+
 class open_digraph: # for open directed graph
   def __init__(self, inputs, outputs, nodes):
     '''
