@@ -6,3 +6,9 @@ for i in range(10):
 
 n0 = node(0, '&', [], [])
 print(n0)
+
+n1 = node(1, 'j', [0], [])
+g = open_digraph([0], [1], [n0, n1])
+e = open_digraph.empty()
+print(g)
+print(e)
