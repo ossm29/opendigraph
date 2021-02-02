@@ -19,6 +19,12 @@ class node:
   def __repr__(self):
     return "node"+str(self)
 
+  def copy(self):
+    #inputs : node
+    #output : copy of the node
+    return node(self.id, self.label, 
+           self.parents.copy(), self.children.copy())
+
 class open_digraph: # for open directed graph
 
   def __init__(self, inputs, outputs, nodes):
@@ -32,22 +38,20 @@ class open_digraph: # for open directed graph
     self.nodes = {node.id:node for node in nodes} # self.nodes: <int,node> dict
 
   def __str__(self):
-    S = "Inputs Ids: "
-    for i in self.inputs:
-      S = S + " " + str(i)
-    S = S + "\nOutputs Ids: "
-    for i in self.outputs:
-      S = S + " " + str(i)
-    S = S + "\nNodes : "
-    for i in self.nodes:
-      S = S + " " + str(i) #à changer (ne montre que les ids)
-    return S
+    return ("("+str(self.inputs)+", "+str(self.nodes)
+                +", "+str(self.outputs)+")")
 
   def __repr__(self):
-    return "graph : \n"+str(self)
+    return "graph : "+str(self)
 
   def empty():
+    #inputs : /
+    #outputs : an empty graph
     return open_digraph([], [], [])
 
-
+  def copy(self):
+    #inputs : open_digraph
+    #outputs : copy of the open_digraph
+    return open_digraph(self.inputs.copy(), 
+           self.outputs.copy(), self.nodes)
 
