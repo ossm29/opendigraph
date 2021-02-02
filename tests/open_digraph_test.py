@@ -1,3 +1,4 @@
+#Oussama Konate, Thomas Delépine
 import sys
 sys.path.append('../') # allows us to fetch files from the project root
 

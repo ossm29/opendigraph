@@ -1,3 +1,4 @@
+#Oussama Konate, Thomas Delépine
 class node:
 
   def __init__(self, identity, label, parents, children):
