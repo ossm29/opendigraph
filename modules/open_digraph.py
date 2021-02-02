@@ -26,6 +26,21 @@ class node:
     return node(self.id, self.label, 
            self.parents.copy(), self.children.copy())
 
+  #getters
+  def get_id(self):
+    return self.id
+
+  def get_label(self):
+    return self.label
+
+  def get_parents_ids(self):
+    return self.parents
+  
+  def get_children_ids(self):
+    return self.children
+  
+  #getters fin
+
 class open_digraph: # for open directed graph
 
   def __init__(self, inputs, outputs, nodes):
@@ -53,6 +68,42 @@ class open_digraph: # for open directed graph
   def copy(self):
     #inputs : open_digraph
     #outputs : copy of the open_digraph
-    return open_digraph(self.inputs.copy(), 
-           self.outputs.copy(), self.nodes)
+    def copy(self):
+        '''
+        output : open_diagraph; retourne une copie du graphe
 
+        '''
+        return open_diagraph(self.inputs,self.outputs,[node.copy() for node in self.nodes.values()])
+
+  #getters
+  def get_input_ids(self):
+    return self.inputs
+
+  def get_output_ids(self):
+    return self.outputs
+
+  def get_id_node_map(self): #dico
+    dico = {}
+    for node in self.nodes:
+      dico[node.id] = node 
+    
+    return dico
+  
+  def get_nodes(self):
+    return self.nodes
+
+  def get_nodes_ids(self):
+    liste = []
+    return (liste.append(node.id) for node in self.nodes)
+
+  def get_node_by_id(self, id):
+    for node in self.nodes:
+      if(node.id == id):
+        return node
+        break
+  
+  def get_nodes_by_ids(self, listid):
+    liste = []
+    return (liste.append(get_node_by_id(id)) for node in listid)
+
+  
