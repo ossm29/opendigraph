@@ -24,6 +24,34 @@ class InitTest(unittest.TestCase):
     self.assertEqual(g.nodes[0], n0)
     self.assertEqual(g.nodes[1], n1)
 
+class NodeTest(unittest.TestCase):
+
+  def setUp(self):
+    self.n0 = node(0, 'i', [], [1])
+    self.n1 = node(1, 'j', [0], [])
+
+  def copy_test(self):
+    n2 = self.n0.copy
+    self.assertEqual(n2.label, self.n0.label)
+    self.assertEqual(n2.id, self.n0.id)
+    self.assertIsNot(n2, self.n0)
+
+class GraphTest(unittest.TestCase):
+
+  def setUp(self):
+    self.n0 = node(0, 'i', [], [1])
+    self.n1 = node(1, 'j', [0], [])
+    g = open_digraph([0], [1], [n0, n1])
+  
+  def copy_test(self):
+    g2 = self.g.copy()
+    self.assertEqual(g2.inputs ,self.g.inputs)
+    self.assertEqual(g2.outputs ,self.g.outputs)
+    self.assertEqual(g2.nodes ,self.g.nodes)
+    self.assertIsNot(g2,self.g)
+  
+
 if __name__ == '__main__':  # the following code is called only when
   unittest.main()           # precisely this file is run
+
   
