@@ -1,4 +1,4 @@
-#Oussama Konate, Thomas Delépine
+#Oussama Konate, Thomas Delépine, groupe 8
 import sys
 sys.path.append('../') # allows us to fetch files from the project root
 

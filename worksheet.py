@@ -1,4 +1,4 @@
-#Oussama Konate, Thomas Delépine
+#Oussama Konate, Thomas Delépine, groupe 8
 from modules.open_digraph import *
   
 

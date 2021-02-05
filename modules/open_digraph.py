@@ -1,4 +1,4 @@
-#Oussama Konate, Thomas Delépine
+#Oussama Konate, Thomas Delépine, groupe 8
 class node:
 
   def __init__(self, identity, label, parents, children):
@@ -27,16 +27,16 @@ class node:
            self.parents.copy(), self.children.copy())
 
   #getters
-  def get_id(self):
+  def get_id(self): #renvoie l'ID d'un noeud (Int)
     return self.id
 
-  def get_label(self):
+  def get_label(self): #renvoie le label d'un noeud (String)
     return self.label
 
-  def get_parents_ids(self):
+  def get_parents_ids(self): #renvoie la liste des ID des parents (int list)
     return self.parents
   
-  def get_children_ids(self):
+  def get_children_ids(self): #renvoie la liste des ID des enfants (int list)
     return self.children
   
   #getters fin
@@ -66,44 +66,38 @@ class open_digraph: # for open directed graph
     return open_digraph([], [], [])
 
   def copy(self):
-    #inputs : open_digraph
-    #outputs : copy of the open_digraph
-    def copy(self):
-        '''
-        output : open_diagraph; retourne une copie du graphe
-
-        '''
-        return open_diagraph(self.inputs,self.outputs,[node.copy() for node in self.nodes.values()])
+      #inputs : open_digraph
+      #outputs : copy of the open_digraph
+      return open_digraph(self.inputs,self.outputs,[node.copy() for node in self.nodes.values()])
 
   #getters
-  def get_input_ids(self):
+  def get_input_ids(self): #return la liste des ID des noeuds d'entrée (int list)
     return self.inputs
 
-  def get_output_ids(self):
+  def get_output_ids(self): #return la liste des ID des noeuds de sortie (int list)
     return self.outputs
 
-  def get_id_node_map(self): #dico
-    dico = {}
+  def get_id_node_map(self): #return un dictionnaire donc les clés sont les ID, et les valeurs les noeuds
+    dico = {}                #({int:node})
     for node in self.nodes:
       dico[node.id] = node 
     
     return dico
   
-  def get_nodes(self):
+  def get_nodes(self): #return l'ensemble des noeuds d'un graph (node list)
     return self.nodes
 
-  def get_nodes_ids(self):
+  def get_nodes_ids(self):#return la liste des ID des noeuds du graph (int list)
     liste = []
     return (liste.append(node.id) for node in self.nodes)
 
-  def get_node_by_id(self, id):
-    for node in self.nodes:
+  def get_node_by_id(self, id):#input : ID (int)
+    for node in self.nodes:    #return le noeud dont l'ID est donné en Input (node)
       if(node.id == id):
         return node
-        break
   
-  def get_nodes_by_ids(self, listid):
-    liste = []
-    return (liste.append(get_node_by_id(id)) for node in listid)
+  def get_nodes_by_ids(self, listid): #input : liste d'ID (int list)
+    liste = []                        #return la liste des noeuds dont l'ID est donné en Input (node List)
+    return (liste.append(get_node_by_id(id)) for id in listid)
 
   
