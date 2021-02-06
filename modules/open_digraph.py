@@ -78,26 +78,19 @@ class open_digraph: # for open directed graph
     return self.outputs
 
   def get_id_node_map(self): #return un dictionnaire donc les clés sont les ID, et les valeurs les noeuds
-    dico = {}                #({int:node})
-    for node in self.nodes:
-      dico[node.id] = node 
-    
-    return dico
+    return self.nodes        #({int:node})
   
   def get_nodes(self): #return l'ensemble des noeuds d'un graph (node list)
-    return self.nodes
+    return [node for node in self.nodes.values()]
 
-  def get_nodes_ids(self):#return la liste des ID des noeuds du graph (int list)
-    liste = []
-    return (liste.append(node.id) for node in self.nodes)
+  def get_node_ids(self):#return la liste des ID des noeuds du graph (int list)
+    return [id for id in self.nodes.keys()]
 
   def get_node_by_id(self, id):#input : ID (int)
-    for node in self.nodes:    #return le noeud dont l'ID est donné en Input (node)
-      if(node.id == id):
-        return node
+    return self.nodes.get(id)
   
   def get_nodes_by_ids(self, listid): #input : liste d'ID (int list)
-    liste = []                        #return la liste des noeuds dont l'ID est donné en Input (node List)
-    return (liste.append(get_node_by_id(id)) for id in listid)
+                                      #return la liste des noeuds dont l'ID est donné en Input (node List)
+    return [self.nodes.get(id) for id in listid]
 
   

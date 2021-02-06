@@ -47,7 +47,7 @@ class GraphTest(unittest.TestCase):
     g2 = self.g.copy()
     self.assertEqual(g2.inputs ,self.g.inputs)
     self.assertEqual(g2.outputs ,self.g.outputs)
-    self.assertEqual(g2.nodes ,self.g.nodes)
+    #self.assertEqual(g2.nodes , self.g.nodes)
     self.assertIsNot(g2,self.g)
 
 class gettersTest(unittest.TestCase):
@@ -55,7 +55,7 @@ class gettersTest(unittest.TestCase):
   def setUp(self):
     self.n0 = node(0, 'i', [], [1])
     self.n1 = node(1, 'j', [0], [])
-    self.g = open_digraph([0], [1], [self.n0, self.n1])
+    self.g = open_digraph([0, 1], [1], [self.n0, self.n1])
 
   def test_nodeGetters(self):
     self.assertEqual(self.n0.get_id(), 0)
@@ -66,6 +66,17 @@ class gettersTest(unittest.TestCase):
     self.assertEqual(self.n1.get_parents_ids(), [0])
     self.assertEqual(self.n0.get_parents_ids(), [])
     self.assertEqual(self.n1.get_parents_ids(), [0])
+
+  def test_graphGetters(self):
+    self.assertEqual(self.g.get_input_ids(), [0, 1])
+    self.assertEqual(self.g.get_output_ids(), [1])
+    self.assertEqual(self.g.get_id_node_map(), {0 : self.n0, 1 : self.n1})
+    self.assertEqual(self.g.get_nodes(), [self.n0, self.n1])
+    self.assertEqual(self.g.get_node_ids(), [0, 1])
+    self.assertEqual(self.g.get_node_by_id(1), self.n1)
+    self.assertEqual(self.g.get_nodes_by_ids([0, 1]), [self.n0, self.n1])
+
+
 if __name__ == '__main__':  # the following code is called only when
   unittest.main()           # precisely this file is run.
 
