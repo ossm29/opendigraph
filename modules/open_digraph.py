@@ -40,7 +40,27 @@ class node:
     return self.children
   
   #getters fin
+  #///////////////////////////
+  #setters
 
+  def set_id(self, id):
+    self.id = id
+
+  def set_label(self, label):
+    self.label = label
+
+  def set_parent_ids(self, parent_ids):
+    self.parents = parent_ids
+  
+  def set_children_ids(self, children_ids):
+    self.children = children_ids
+  
+  def add_child_id(self, id):
+    self.children.append(id)
+
+  def add_parent_id(self, id):
+    self.parents.append(id)
+  #setters fin
 class open_digraph: # for open directed graph
 
   def __init__(self, inputs, outputs, nodes):
@@ -92,5 +112,38 @@ class open_digraph: # for open directed graph
   def get_nodes_by_ids(self, listid): #input : liste d'ID (int list)
                                       #return la liste des noeuds dont l'ID est donné en Input (node List)
     return [self.nodes.get(id) for id in listid]
+  #getters fin
+  #/////////////////////
+  #setters
+
+  def set_input_ids(self, ids): #@param : entiers représentant les ID (int list)
+    self.inputs = ids 
+
+  def set_output_ids(self, ids): #@param : entiers représentant les ID (int list)
+    self.outputs = ids
+
+  def add_input_id(self, id): #@param:  entier étant l'ID à ajouter (int)
+    self.inputs.append(id)
+
+  def add_output_id(self, id): #@param:  entier étant l'ID à ajouter (int)
+    self.outputs.append(id)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
