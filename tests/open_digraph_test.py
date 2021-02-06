@@ -76,6 +76,34 @@ class gettersTest(unittest.TestCase):
     self.assertEqual(self.g.get_node_by_id(1), self.n1)
     self.assertEqual(self.g.get_nodes_by_ids([0, 1]), [self.n0, self.n1])
 
+class settersTest(unittest.TestCase):
+
+  def setUp(self):
+    self.n0 = node(0, 'i', [], [1])
+    self.n1 = node(1, 'j', [0], [])
+    self.g = open_digraph([0, 1], [1], [self.n0, self.n1])
+  
+  def test_nodeSetters(self):
+    n2 = self.n0.copy()
+    n2.set_id(10)
+    n2.set_label('k')
+    n2.set_parent_ids([0,1,2])
+    n2.set_children_ids([4,5,6])
+    n2.add_parent_id(3)
+    n2.add_child_id(7)
+    self.assertEqual(n2.id, 10)
+    self.assertEqual(n2.label, 'k' )
+    self.assertEqual(n2.parents, [0,1,2,3])
+    self.assertEqual(n2.children, [4,5,6,7])
+
+  def test_graphSetters(self):
+    g1 = self.g.copy()
+    g1.set_input_ids([0,1,2])
+    g1.add_input_id(3)
+    g1.set_output_ids([4,5,6])
+    g1.add_output_id(7)
+    self.assertEqual(g1.inputs, [0,1,2,3])
+    self.assertEqual(g1.outputs, [4,5,6,7])
 
 if __name__ == '__main__':  # the following code is called only when
   unittest.main()           # precisely this file is run.
