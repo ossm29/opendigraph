@@ -1,5 +1,6 @@
 #Oussama Konate, Thomas Delépine, groupe 8
 from modules.open_digraph import *
+import inspect
   
 print("hello, world")
 for i in range(10):
@@ -14,3 +15,6 @@ e = open_digraph.empty()
 print(g)
 print(e)
 
+print(dir(node))
+
+print(dir(open_digraph))
