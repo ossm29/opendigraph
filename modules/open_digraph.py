@@ -1,5 +1,6 @@
 #Oussama Konate, Thomas Delépine, groupe 8
 import bisect  #module pour insérer element dans liste triée
+from modules.utils import *
 
 class node:
 
@@ -63,6 +64,21 @@ class node:
   def add_parent_id(self, id):
     bisect.insort(self.parents,id)
   #setters fin
+  #removers
+  def remove_parent_id(self, id):#supprime la première occurence de l'ID (int) donné en paramètre dans la liste des ID des parents
+    if id in self.parents:
+      self.parents.remove(id)
+
+  def remove_child_id(self, id):#supprime la première occurence de l'ID (int) donné en paramètre dans la liste des ID des enfants
+    if id in self.children:
+      self.children.remove(id)
+
+  def remove_parent_id_all(self, id):#supprime toutes les occurences de l'ID (int) donné en paramètre dans la liste des ID des parents
+    self.parents = remove_all(self.parents, id)
+
+  def remove_child_id_all(self, id):#supprime toutes les occurences de l'ID (int) donné en paramètre dans la liste des ID des enfants
+    self.children = remove_all(self.children, id)
+
 
 class open_digraph: # for open directed graph
 

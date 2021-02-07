@@ -106,6 +106,18 @@ class settersTest(unittest.TestCase):
     self.assertEqual(g1.inputs, [0,1,2,3])
     self.assertEqual(g1.outputs, [4,5,6,7])
 
+class removersTest(unittest.TestCase):
+  def test_removersNodes(self):
+    n0 = node(0, 'i', [2,3,4,5,4,4], [1])
+    n0.remove_parent_id(4)
+    self.assertEqual(n0.parents, [2,3,5,4,4])
+    n0.remove_parent_id_all(4)
+    self.assertEqual(n0.parents, [2,3,5])
+    n1 = node(1, 'j', [0], [8,4,8,5,6,6,8])
+    n1.remove_child_id(8)
+    self.assertEqual(n1.children, [4,8,5,6,6,8])
+    n1.remove_child_id_all(8)
+    self.assertEqual(n1.children, [4,5,6,6])
   
 
 if __name__ == '__main__':  # the following code is called only when

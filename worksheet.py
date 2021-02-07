@@ -4,7 +4,7 @@ import inspect
 
 print("-------test :-----------")
 print("hello, world")
-for i in range(10):
+for i in range(3):
   print("1 2 3 viva : ", i);
 
 print("----affichage d'un noeud----")
