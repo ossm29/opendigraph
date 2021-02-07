@@ -50,6 +50,7 @@ class GraphTest(unittest.TestCase):
     #self.assertEqual(g2.nodes , self.g.nodes)
     self.assertIsNot(g2,self.g)
 
+
 class gettersTest(unittest.TestCase):
 
   def setUp(self):
@@ -104,6 +105,8 @@ class settersTest(unittest.TestCase):
     g1.add_output_id(7)
     self.assertEqual(g1.inputs, [0,1,2,3])
     self.assertEqual(g1.outputs, [4,5,6,7])
+
+  
 
 if __name__ == '__main__':  # the following code is called only when
   unittest.main()           # precisely this file is run.

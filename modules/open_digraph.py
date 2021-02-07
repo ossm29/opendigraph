@@ -1,4 +1,6 @@
 #Oussama Konate, Thomas Delépine, groupe 8
+import bisect  #module pour insérer element dans liste triée
+
 class node:
 
   def __init__(self, identity, label, parents, children):
@@ -20,7 +22,7 @@ class node:
   def __repr__(self):
     return "node"+str(self)
 
-  def copy(self):
+  def copy(self): #renvoie la copie d'un noeud
     #inputs : node
     #output : copy of the node
     return node(self.id, self.label, 
@@ -56,11 +58,12 @@ class node:
     self.children = children_ids
   
   def add_child_id(self, id):
-    self.children.append(id)
+    bisect.insort(self.children,id)
 
   def add_parent_id(self, id):
-    self.parents.append(id)
+    bisect.insort(self.parents,id)
   #setters fin
+
 class open_digraph: # for open directed graph
 
   def __init__(self, inputs, outputs, nodes):
@@ -127,14 +130,28 @@ class open_digraph: # for open directed graph
 
   def add_output_id(self, id): #@param:  entier étant l'ID à ajouter (int)
     self.outputs.append(id)
+  #setters fin
+  #/////////////////////
+  def new_id(self): #renvoie un id non utilisé dans le graphe.(choisit le + petit)
+    liste = get_node_ids(self)
+    liste.sort()
+    result = next(x for x, y in enumerate(liste, 1) if x != y)
+    return result
 
+  def add_edge(self, src, tgt): #ajoute une arête du noeud d’id src au noeud d’id tgt /!\ ERREUR ENONCÉ
+    src.add_child_id(tgt)#bisect.insort(self.get_node_by_id(src).children,get_id(tgt))
+    tgt.add_parent_id(src)#bisect.insort(self.get_node_by_id(tgt).parents,get_id(src)) 
 
+  def add_edges(self, src, list_tgt): #ajoute des arêtes du noeud d’id src aux noeud d’id de la listtgt
+    for tgt in list_tgt:
+      src.add_child_id(tgt) #bisect.insort(self.get_node_by_id(src).children,get_id(tgt))
+      tgt.add_parent_id(src)#bisect.insort(self.get_node_by_id(tgt).parents,get_id(src))
 
-
-
-
-
-
+  def add_node(self, label, parents,children):
+    newid = self.new_id()
+    self.nodes[newid] = node(a, label, parents.copy(), children.copy())
+    self.nodes[newid].add_edges(parents,children)
+    return newid
 
 
 
