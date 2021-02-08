@@ -167,7 +167,7 @@ class open_digraph: # for open directed graph
     newid = self.new_id()
     self.nodes[newid] = node(newid, label, parents.copy(), children.copy())
     for element in parents:
-      self.add_edge(parents,newid)
+      self.add_edge(element,newid)
     self.add_edges(newid,children)
     return newid
 
