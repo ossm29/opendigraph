@@ -118,7 +118,23 @@ class removersTest(unittest.TestCase):
     self.assertEqual(n1.children, [4,8,5,6,6,8])
     n1.remove_child_id_all(8)
     self.assertEqual(n1.children, [4,5,6,6])
-  
+
+class wellFormed(unittest.TestCase):
+  def test_is_well_formed(self):
+    n0 = node(0, 'i', [], [1])
+    n1 = node(1, 'j', [0], [])
+    n2 = node(2, 'j', [2, 3], [2,3])
+    n3 = node(3, 'j', [2], [2])
+    g1 = open_digraph([0, 1], [1], [n0, n1])
+    self.assertEqual(g1.is_well_formed(), True)
+    g2 = open_digraph([0, 1, 2], [1], [n0, n1])
+    self.assertEqual(g2.is_well_formed(), False)
+    g3 = open_digraph([0, 1, 2], [1], [n0, n1, n2, n3])
+    self.assertEqual(g3.is_well_formed(), True)
+    g4 = open_digraph([], [], [])
+    self.assertEqual(g4.is_well_formed(), True)
+    g5 = open_digraph([0], [0], [n0, n2, n3])
+    self.assertEqual(g5.is_well_formed(), False)
 
 if __name__ == '__main__':  # the following code is called only when
   unittest.main()           # precisely this file is run.
