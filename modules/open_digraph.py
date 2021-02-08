@@ -1,6 +1,6 @@
 #Oussama Konate, Thomas Delépine, groupe 8
 import bisect  #module pour insérer element dans liste triée
-from utils import *
+from modules.utils import *
 
 class node:
 
@@ -186,6 +186,33 @@ class open_digraph: # for open directed graph
   def remove_node_by_ids(self,listid):
     for id in listid:
       self.remove_node_by_id(id)
+
+  def is_well_formed(self):
+    nodeListId = self.get_node_ids()
+    nodeList = self.get_nodes()
+    for e in self.inputs:
+      if not e in nodeListId:
+        return False
+    for e in self.outputs:
+      if not e in nodeListId:
+        return False
+    for e in nodeList:
+      if self.nodes[e.id] != e:
+        return False
+    for node in nodeList:
+      for e in node.parents:
+        if e in nodeListId:
+          if not count_occurence(node.parents, e) == count_occurence(self.nodes[e].children, node.id):
+            return False
+        else:
+          return False
+      for e in node.children:
+        if e in nodeListId:
+          if not count_occurence(node.children, e) == count_occurence(self.nodes[e].parents, node.id):
+            return False
+        else:
+          return False
+    return True
 
   
 
