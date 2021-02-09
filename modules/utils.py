@@ -11,3 +11,4 @@ def count_occurence(l, x):
 		if e == x:
 			cpt = cpt + 1
 	return cpt
+

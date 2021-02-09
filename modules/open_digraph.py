@@ -16,6 +16,10 @@ class node:
     self.parents = parents
     self.children = children
 
+  def __eq__(self,other):
+    return ((self.get_id() == other.get_id()) and (self.get_label() == other.get_label()) and (self.get_children_ids() == other.get_children_ids()) 
+    and (self.get_parents_ids() == other.get_parents_ids()))
+
   def __str__(self):
     return ("(" + str(self.id) + ", " + self.label + ", "
     + str(self.parents) + ", " + str(self.children) + ")")
@@ -92,6 +96,10 @@ class open_digraph: # for open directed graph
     self.outputs = outputs
     self.nodes = {node.id:node for node in nodes} # self.nodes: <int,node> dict
 
+  def __eq__(self,other):
+    return ((self.get_input_ids()== other.get_input_ids()) and (self.get_output_ids() == other.get_output_ids()) 
+    and ( self.get_nodes() == other.get_nodes()))
+
   def __str__(self):
     return ("("+str(self.inputs)+", "+str(self.nodes)
                 +", "+str(self.outputs)+")")
@@ -118,7 +126,7 @@ class open_digraph: # for open directed graph
 
   def get_id_node_map(self): #return un dictionnaire donc les clés sont les ID, et les valeurs les noeuds
     return self.nodes        #({int:node})
-  
+
   def get_nodes(self): #return l'ensemble des noeuds d'un graph (node list)
     return [node for node in self.nodes.values()]
 
@@ -127,7 +135,7 @@ class open_digraph: # for open directed graph
 
   def get_node_by_id(self, id):#input : ID (int)
     return self.nodes.get(id)
-  
+
   def get_nodes_by_ids(self, listid): #input : liste d'ID (int list)
                                       #return la liste des noeuds dont l'ID est donné en Input (node List)
     return [self.nodes.get(id) for id in listid]
@@ -180,6 +188,11 @@ class open_digraph: # for open directed graph
     for element in self.get_node_ids():
       self.get_node_by_id(element).remove_parent_id_all(id)
       self.get_node_by_id(element).remove_child_id_all(id)
+    while id in self.get_input_ids():
+      self.get_input_ids().remove(id)
+    while id in self.get_output_ids():
+      self.get_output_ids().remove(id)
+
   
   def remove_edges(self, listsrctgt):#supprime une arêtes de chaque paire de noeuds (src,tgt) de la liste @param
     for index, tuple in enumerate(listsrctgt):
