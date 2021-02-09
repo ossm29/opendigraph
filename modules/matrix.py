@@ -1,33 +1,42 @@
 import random
 
-def random_int_list(n, bound):
+def random_int_list(n, bound): #@param : n (int) : nb éléments | bound (int) : valeur max
   liste = []
   for i in range(0,n):
     liste.append(random.randint(0,bound))
-  return liste
-
-def random_int_matrix(n, bound):
-  liste = []
-  for i in range(0,n):
-    liste.append(random_int_list(n,bound))
-  return liste
-
-def random_int_matrix(n, bound, null_diag=True):
+  return liste #@return : int list
+####################################################
+def random_int_matrix(n, bound, null_diag=False):#@param : n (int) : nb éléments | bound (int) : valeur max | null_diag (boolean)
   liste = []
   for element in range(0,n):
     liste.append(random_int_list(n,bound))
-  for i in range(0,n):
-    liste[i][i] = 0
-  return liste
-
-def random_symetric_int_matrix(n, bound,null_diag=True):
+  if null_diag:
+    for i in range(0,n):
+      liste[i][i] = 0
+  return liste #@return : int list list
+####################################################
+def random_symetric_int_matrix(n, bound,null_diag=False):#@param : n (int) : nb éléments | bound (int) : valeur max | null_diag (boolean)
   liste = []
-  for i in range(0,n):
-    for j in range(0,i):
+  for i in range(0, n):
+    liste.append([0 for j in range(0, n)])
+  for i in range(0, n):
+    for j in range(0, i + 1):
       r = random.randint(0,bound)
       liste[i][j] = liste[j][i] = r
-    liste.append(random_int_list(n,bound))
+  if null_diag:
+    for i in range(0,n):
+      liste[i][i] = 0
+  return liste #@return : int list list
 
-  for i in range(0,n):
-    liste[i][i] = 0
-  return liste
+
+
+
+
+
+
+
+
+
+
+
+

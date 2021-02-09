@@ -15,12 +15,18 @@ class MatrixTest(unittest.TestCase):
     test = random_int_matrix(10,10)
     for element in test:
       self.assertEqual(len(element),10)
+
   def test_random_int_matrix2(self):
     test2 = random_int_matrix(10,10,null_diag=True)
     for i in range(0,10):
       self.assertEqual(test2[i][i],0)
 
-
+  def test_sym_rand_matrix(self):
+    m = random_symetric_int_matrix(5, 10, null_diag = True)
+    for i in range(5):
+      for j in range(5):
+        self.assertEqual(m[i][j], m[j][i])
+      self.assertEqual(m[i][i], 0)
 
 
 if __name__ == '__main__':  # the following code is called only when
