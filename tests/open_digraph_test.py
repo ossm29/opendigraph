@@ -24,8 +24,20 @@ class InitTest(unittest.TestCase):
     self.assertEqual(g.nodes[0], n0)
     self.assertEqual(g.nodes[1], n1)
 
-class NodeTest(unittest.TestCase):
+class EqTest(unittest.TestCase):
+  def test_eq_node(self):
+    self.assertEqual(node(0, 'i', [], [1,2])==node(1, 'j', [0], []), False)
+    self.assertEqual(node(0, 'i', [], [1])==node(1, 'j', [0], []), False)
+    self.assertEqual(node(2, 'j', [2, 3], [2,3]) == node(2, 'j', [2, 3], [2,3]), True)
+    self.assertEqual(node(0, 'i', [], [1])==node(0, 'i', [], [1]), True)
+  def test_eq_graph(self):
+    n0 = node(0, 'i', [], [1])
+    n1 = node(1, 'j', [0], [])
+    g = open_digraph([0, 1], [1], [n0, n1])
+    self.assertEqual(g==open_digraph([0, 1], [1], [node(0, 'i', [], [1]), node(1, 'j', [0], [])]), True)
+    
 
+class NodeTest(unittest.TestCase):
   def setUp(self):
     self.n0 = node(0, 'i', [], [1])
     self.n1 = node(1, 'j', [0], [])
@@ -47,7 +59,7 @@ class GraphTest(unittest.TestCase):
     g2 = self.g.copy()
     self.assertEqual(g2.inputs ,self.g.inputs)
     self.assertEqual(g2.outputs ,self.g.outputs)
-    #self.assertEqual(g2.nodes , self.g.nodes)
+    self.assertEqual(g2.nodes == self.g.nodes, True)
     self.assertIsNot(g2,self.g)
 
 
@@ -135,12 +147,8 @@ class removersTest(unittest.TestCase):
     k1 = node(1, 'j', [0], [])
     g = open_digraph([0, 1], [1], [k0, k1])
     g.remove_edge(0,1)
-    self.assertEqual(g.get_input_ids(), [0,1])
-    self.assertEqual(g.get_output_ids(), [1])
-    self.assertEqual(g.get_node_ids(), [0,1])
-    # bug : self.assertEqual(g.get_nodes_by_ids([0,1]), [node(0, 'i', [], []),node(1, 'j', [], [])])
-    self.assertEqual(g.get_node_ids(), [0,1])
-    #self.assertEqual(g,open_digraph([0, 1], [1], [k0, k1]))
+    gcomp = open_digraph([0, 1], [1], [node(0, 'i', [], []), node(1, 'j', [], [])])
+    self.assertEqual(g,gcomp)
     #remove_edges
     l0 = node(0, 'i', [], [1,2])
     l1 = node(1, 'j', [0], [2])
@@ -148,32 +156,25 @@ class removersTest(unittest.TestCase):
     g2 = open_digraph([0], [2], [l0, l1, l2])
     g2.remove_edges([(0,1),(1,2)])
     gcomp = open_digraph([0],[2], [node(0, 'i', [], [2]),node(1, 'j', [], []),node(2, 'k', [0], [])])
-    self.assertEqual(g2.get_input_ids(),gcomp.get_input_ids())
-    self.assertEqual(g2.get_output_ids(),gcomp.get_output_ids())
-    self.assertEqual(g2.get_node_ids(),gcomp.get_node_ids())
-    #bug : self.assertEqual(g2.get_nodes_by_ids(),gcomp.get_nodes_by_ids())
-
+    self.assertEqual(g2,gcomp)
+    
 class addersTest(unittest.TestCase):
   def test_addersEdges(self):
     k0 = node(0, 'i', [], [])
     k1 = node(1, 'j', [], [])
     g = open_digraph([0, 1], [1], [k0, k1])
     g.add_edge(0,1)
-    self.assertEqual(g.get_input_ids(), [0,1])
-    self.assertEqual(g.get_output_ids(), [1])
-    self.assertEqual(g.get_node_ids(), [0,1])
-    #bug : self.assertEqual(g.get_node_by_id(0),node(0, 'i', [], [1]))
-    #bug : self.assertEqual(g.get_node_by_id(1),node(1, 'j', [0], []))
-    #bug : self.assertEqual(g.get_nodes(),[node(0, 'i', [], [1]),node(1, 'j', [0], [])])
+    gcomp = open_digraph([0, 1], [1], [node(0, 'i', [], [1]), node(1, 'j', [0], [])])
+    self.assertEqual(g,gcomp)
     #add_edges
     l0 = node(0, 'i', [], [])
     l1 = node(1, 'j', [], [2])
     l2 = node(2, 'k', [1], [])
     g2 = open_digraph([0], [2], [l0, l1, l2])
     g2.add_edges(0, [1,2])
-    #bug : self.assertEqual(g2.get_node_by_id(0),node(0, 'i', [], [1,2]))
-    #bug : self.assertEqual(g2.get_node_by_id(1),node(1, 'j', [0], [2]))
-    #bug : self.assertEqual(g2.get_node_by_id(2),node(2, 'k', [0], []))
+    gcomp = open_digraph([0], [2], [node(0, 'i', [], [1,2]), node(1, 'j', [0], [2]), node(2, 'k', [0,1], [])])
+    self.assertEqual(g2, gcomp)
+
   def test_addersNodes(self):
     u0 = node(0, 'i', [], [])
     g = open_digraph([0],[],[u0])
