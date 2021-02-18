@@ -1,7 +1,7 @@
 #Oussama Konate, Thomas Delépine, groupe 8
 import sys
 sys.path.append('../') # allows us to fetch files from the project root
-
+import math
 import unittest
 from modules.draw_graph import *
 
@@ -34,7 +34,7 @@ class pointtest(unittest.TestCase):
     draw.arrows(point(300, 300), point(400, 100))
     draw.arrows(point(300, 300), point(100, 300))
     draw.arrows(point(300, 300), point(450, 75))
-    draw.arrows(point(300, 300), point(86, 95))
+    draw.arrows(point(300, 300), point(math.sqrt(2)*0.5*25+200, math.sqrt(2)*0.5*25+200))
     draw.arrows(point(300, 300), point(300, 50))
     image.save("test.jpg")
   

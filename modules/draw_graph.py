@@ -24,6 +24,8 @@ def drawarrows(self, p1, p2):
   '''doc : todo'''
   self.line([p1.n(), p2.n()], 'black')
   theta = math.acos((p2.x - p1.x)/math.sqrt((p2.x - p1.x)*(p2.x - p1.x) + (p2.y - p1.y)*(p2.y - p1.y)))
+  if p2.y < p1.y:
+    theta = -theta
   r = 10.0
   alpha = math.pi/6
 
