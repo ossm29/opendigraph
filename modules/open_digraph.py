@@ -230,51 +230,56 @@ class open_digraph: # for open directed graph
     return True
 
   def change_id(self, node_id, new_id):
-    #assert [not node_id in self.get_nodes()], "ERROR, node_id is not even in the graph"
-    #assert [ new_id in self.get_nodes()], "EROR, new_id is already in the graph"
-    cptInputs = 0
-    while node_id in self.inputs:
-      self.inputs.remove(node_id)
-      cptInputs = cptInputs + 1
-    for i in range(cptInputs):
-      bisect.insort(self.inputs,new_id)
-    cptOutputs = 0
-    while node_id in self.outputs:
-      self.outputs.remove(node_id)
-      cptOutputs = cptOutputs + 1
-    for i in range(cptOutputs):
-      bisect.insort(self.outputs, new_id)
-    newNode = self.nodes[node_id].copy()
-    newNode.id = new_id
-    for nodeParent in self.get_nodes_by_ids(newNode.parents):
-      cptChildren = 0
-      while node_id in nodeParent.children:
-        nodeParent.children.remove(node_id)
-        cptChildren = cptChildren + 1
-      for i in range(cptChildren):
-        bisect.insort(nodeParent.children, new_id)
-    for nodeChildren in self.get_nodes_by_ids(newNode.children):
-      cptParents = 0
-      while node_id in nodeChildren.parents:
-        nodeChildren.parents.remove(node_id)
-        cptParents = cptParents + 1
-      for i in range(cptParents):
-        bisect.insort(nodeChildren.parents, new_id)
-    while node_id in newNode.get_parents_ids():
-      newNode.get_parents_ids().remove(node_id)
-      bisect.insort(newNode.parents, new_id)
-    while node_id in newNode.get_children_ids():
-      newNode.get_children_ids().remove(node_id)
-      bisect.insort(newNode.children, new_id)
-    self.nodes.pop(node_id)
-    self.nodes[new_id] = newNode
+    if new_id in self.get_node_ids():
+      print("new node already in the graph")
+    elif not node_id in self.get_node_ids():
+      print("node_id not in the graph")
+    else:
+      cptInputs = 0
+      while node_id in self.inputs:
+        self.inputs.remove(node_id)
+        cptInputs = cptInputs + 1
+      for i in range(cptInputs):
+        bisect.insort(self.inputs,new_id)
+      cptOutputs = 0
+      while node_id in self.outputs:
+        self.outputs.remove(node_id)
+        cptOutputs = cptOutputs + 1
+      for i in range(cptOutputs):
+        bisect.insort(self.outputs, new_id)
+      newNode = self.nodes[node_id].copy()
+      newNode.id = new_id
+      for nodeParent in self.get_nodes_by_ids(newNode.parents):
+        cptChildren = 0
+        while node_id in nodeParent.children:
+          nodeParent.children.remove(node_id)
+          cptChildren = cptChildren + 1
+        for i in range(cptChildren):
+          bisect.insort(nodeParent.children, new_id)
+      for nodeChildren in self.get_nodes_by_ids(newNode.children):
+        cptParents = 0
+        while node_id in nodeChildren.parents:
+          nodeChildren.parents.remove(node_id)
+          cptParents = cptParents + 1
+        for i in range(cptParents):
+          bisect.insort(nodeChildren.parents, new_id)
+      while node_id in newNode.get_parents_ids():
+        newNode.get_parents_ids().remove(node_id)
+        bisect.insort(newNode.parents, new_id)
+      while node_id in newNode.get_children_ids():
+        newNode.get_children_ids().remove(node_id)
+        bisect.insort(newNode.children, new_id)
+      self.nodes.pop(node_id)
+      self.nodes[new_id] = newNode
 
+  def change_ids(self, l):
+    l = sorted(l, key=lambda l: l[1])
+    for i in l:
+      self.change_id(i[0], i[1])
 
-
-
-
-
-
-
-
-  
+  def normalise_ids(self):
+    cpt = 0
+    for i in self.get_node_ids():
+      if i != cpt:
+        self.change_id(i, cpt)
+      cpt = cpt + 1
