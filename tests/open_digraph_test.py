@@ -56,7 +56,22 @@ class changeGraph(unittest.TestCase):
     n3 = node(3, 'j', [2], [2])
     g = open_digraph([0, 1, 2], [1], [n0, n1, n2, n3])
     g.change_id(2, 10)
-    print("\n",g)
+    self.assertEqual(g.inputs, [0,1,10])
+    self.assertEqual(g.outputs, [1])
+    self.assertEqual(g.get_nodes(), [node(0, "i", [1], [1]),node(1, "j", [0], [0]),node(3, "j", [10], [10]), node(10, "j", [3, 10], [3, 10])])
+    g.change_ids([(2, 4),(10, 2)])
+    self.assertEqual(g.inputs, [0,1,4])
+    self.assertEqual(g.outputs, [1])
+    self.assertEqual(g.get_nodes(), [node(0, "i", [1], [1]),node(1, "j", [0], [0]),node(3, "j", [4], [4]), node(4, "j", [3, 4], [3, 4])])
+    g.change_id(1, 11)
+    self.assertEqual(g.inputs, [0,4,11])
+    self.assertEqual(g.outputs, [11])
+    self.assertEqual(g.get_nodes(), [node(0, "i", [11], [11]),node(3, "j", [4], [4]), node(4, "j", [3, 4], [3, 4]),node(11, "j", [0], [0])])
+    g.normalise_ids()
+    self.assertEqual(g.inputs, [0,2,3])
+    self.assertEqual(g.outputs, [3])
+    self.assertEqual(g.get_nodes(), [node(0, "i", [3], [3]),node(1, "j", [2], [2]), node(2, "j", [1, 2], [1, 2]),node(3, "j", [0], [0])])
+
 
 class GraphTest(unittest.TestCase):
 
@@ -209,5 +224,3 @@ class wellFormed(unittest.TestCase):
 
 if __name__ == '__main__':  # the following code is called only when
   unittest.main()           # precisely this file is run.
-
-  
