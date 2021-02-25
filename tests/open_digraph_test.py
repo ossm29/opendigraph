@@ -48,6 +48,16 @@ class NodeTest(unittest.TestCase):
     self.assertEqual(n2.id, self.n0.id)
     self.assertIsNot(n2, self.n0)
 
+class changeGraph(unittest.TestCase):
+  def test_change_id(self):
+    n0 = node(0, 'i', [1], [1])
+    n1 = node(1, 'j', [0], [0])
+    n2 = node(2, 'j', [2, 3], [2,3])
+    n3 = node(3, 'j', [2], [2])
+    g = open_digraph([0, 1, 2], [1], [n0, n1, n2, n3])
+    g.change_id(2, 10)
+    print("\n",g)
+
 class GraphTest(unittest.TestCase):
 
   def setUp(self):
