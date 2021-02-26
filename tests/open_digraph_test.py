@@ -72,6 +72,15 @@ class changeGraph(unittest.TestCase):
     self.assertEqual(g.outputs, [3])
     self.assertEqual(g.get_nodes(), [node(0, "i", [3], [3]),node(1, "j", [2], [2]), node(2, "j", [1, 2], [1, 2]),node(3, "j", [0], [0])])
 
+class adjacencyMatrix(unittest.TestCase):
+    def test_adjacency_matrix(self):
+        n0 = node(0, 'i', [1], [1, 2, 2])
+        n1 = node(1, 'j', [0], [0])
+        n2 = node(2, 'j', [1, 1, 2, 3], [2,3])
+        n3 = node(3, 'j', [2, 3], [2, 3])
+        g = open_digraph([0, 1, 2], [1], [n0, n1, n2, n3])
+        self.assertEqual(g.adjacency_matrix(), [[0, 1, 2, 0], [1, 0, 0, 0], [0, 0, 1, 1], [0, 0, 1, 1]])
+
 
 class GraphTest(unittest.TestCase):
 

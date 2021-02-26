@@ -283,3 +283,12 @@ class open_digraph: # for open directed graph
       if i != cpt:
         self.change_id(i, cpt)
       cpt = cpt + 1
+
+  def adjacency_matrix(self): #graph supposé normalisé
+    nodeList = self.get_nodes()
+    n = len(nodeList)
+    adjMatrix = [[0 for i in range(n)] for j in range(n)]
+    for node in nodeList:
+      for childId in node.get_children_ids():
+        adjMatrix[node.get_id()][childId] = adjMatrix[node.get_id()][childId] + 1
+    return adjMatrix
