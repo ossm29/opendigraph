@@ -1,4 +1,5 @@
 #Oussama Konate, Thomas Delépine, groupe 8
+import random
 import bisect  #module pour insérer element dans liste triée
 from modules.utils import *
 
@@ -292,3 +293,29 @@ class open_digraph: # for open directed graph
       for childId in node.get_children_ids():
         adjMatrix[node.get_id()][childId] = adjMatrix[node.get_id()][childId] + 1
     return adjMatrix
+
+  def random_layout(self):
+    node_pos = {}
+    input_pos, output_pos = {}
+ 
+    xlist = random.sample(range(1, 100),len(self.get_node_ids()))
+    ylist = random.sample(range(1, 100),len(self.get_node_ids()))
+
+    tmp = 0
+    for node in self.get_nodes():
+      node_pos[node.get_id()] = (xlist[tmp],ylist[tmp])
+      tmp2 = random.randint(1,2)
+      if(tmp2 == 1):
+        input_pos.append(node.get_id())
+      else:
+        output_pos.append(node.get_id())
+    
+
+
+
+
+
+
+
+
+
