@@ -294,13 +294,11 @@ class open_digraph: # for open directed graph
         adjMatrix[node.get_id()][childId] = adjMatrix[node.get_id()][childId] + 1
     return adjMatrix
 
-  def random_layout(self):
+  def random_layout(self): #
     node_pos = {}
     input_pos, output_pos = {}
- 
     xlist = random.sample(range(1, 100),len(self.get_node_ids()))
     ylist = random.sample(range(1, 100),len(self.get_node_ids()))
-
     tmp = 0
     for node in self.get_nodes():
       node_pos[node.get_id()] = (xlist[tmp],ylist[tmp])
@@ -309,7 +307,7 @@ class open_digraph: # for open directed graph
         input_pos.append(node.get_id())
       else:
         output_pos.append(node.get_id())
-    
+    return node_pos,input_pos,output_pos
 
 
 
