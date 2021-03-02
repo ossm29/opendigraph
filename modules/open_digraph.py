@@ -160,8 +160,9 @@ class open_digraph: # for open directed graph
   def new_id(self): #renvoie un id non utilisé dans le graphe.(choisit le + petit)
     liste = self.get_node_ids()
     liste.sort()
-    result = next(x for x, y in enumerate(liste, 1) if x != y)
-    return result
+    if (liste[len(liste)-1] == len(liste)-1):
+      return len(liste)
+    return next(x for x, y in enumerate(liste, 1) if x != y)
 
   def add_edge(self, src, tgt): #ajoute une arête du noeud d’id src au noeud d’id tgt /!\ ERREUR ENONCÉ
     self.get_node_by_id(src).add_child_id(tgt) #bisect.insort(self.get_node_by_id(src).children,get_id(tgt)) #self.get_node_by_id(src).add_child_id(tgt)
@@ -174,7 +175,7 @@ class open_digraph: # for open directed graph
 
   def add_node(self, label, parents,children):#ajoute un noeud (avec label) au graphe avec un nouvel id
     newid = self.new_id()
-    self.nodes[newid] = node(newid, label, parents.copy(), children.copy())
+    self.nodes[newid] = node(newid, label, [], [])
     for element in parents:
       self.add_edge(element,newid)
     self.add_edges(newid,children)
@@ -294,20 +295,7 @@ class open_digraph: # for open directed graph
         adjMatrix[node.get_id()][childId] = adjMatrix[node.get_id()][childId] + 1
     return adjMatrix
 
-  def random_layout(self): #
-    node_pos = {}
-    input_pos, output_pos = {}
-    xlist = random.sample(range(1, 100),len(self.get_node_ids()))
-    ylist = random.sample(range(1, 100),len(self.get_node_ids()))
-    tmp = 0
-    for node in self.get_nodes():
-      node_pos[node.get_id()] = (xlist[tmp],ylist[tmp])
-      tmp2 = random.randint(1,2)
-      if(tmp2 == 1):
-        input_pos.append(node.get_id())
-      else:
-        output_pos.append(node.get_id())
-    return node_pos,input_pos,output_pos
+
 
 
 

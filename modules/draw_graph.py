@@ -1,7 +1,13 @@
 from PIL import Image, ImageDraw
 import math
+from datetime import datetime
 from modules.open_digraph import *
 
+
+random.seed(datetime.now())
+WIDTH = 500
+HEIGHT = 500
+RADIUS = 100
 
 class point:
   def __init__(self,x,y):
@@ -47,16 +53,45 @@ ImageDraw.ImageDraw.node = drawnode
 
 def drawgraph(self, g, node_pos,  input_pos, output_pos, method='manual'):
   '''doc : todo'''
-  for i in range(len(input_pos)):
-    self.arrows(input_pos[i], node_pos[g.get_input_ids[i]])
-  for i in range(len(output_pos)):
-    self.arrows(output_pos[i], node_pos[g.get_output_ids[i]])
-  for n in g.get_nodes():
-    self.node(node_pos[n.get_id()], n, verbose=True)
+  if(method=='manual'):
+    self.arrows(point(0,0), point(WIDTH/2,HEIGHT/2))
+    for i in range(len(input_pos)):
+      #self.arrows(input_pos[i], node_pos[g.get_input_ids()[i]])
+      self.arrows(point(0,0), point(WIDTH/2,HEIGHT/2))
+    for i in range(len(output_pos)):
+      self.arrows(output_pos[i], node_pos[g.get_output_ids()[i]])
+    for n in g.get_nodes():
+      self.node(node_pos[n.get_id()], n, verbose=True)
+  if(method =='random'):
+    np,ip,op = random_layout(g)
+    self.graph(g,np,ip,op,method = 'manual')
 
 ImageDraw.ImageDraw.graph = drawgraph
 
+def random_layout(g): #
+  node_pos = {}
+  input_pos = []
+  output_pos = []  
+  tuplist = [(i,j) for i in range(WIDTH) for j in range(HEIGHT)]
+  tirage = random.sample(tuplist,len(g.get_nodes()))
+  tmp = 0
+  for node in g.get_nodes():
+    node_pos[node.get_id()] = point(tirage[tmp][0],tirage[tmp][1])
+    tmp+=1
+  for node in g.get_input_ids():
+    x = random.uniform(-1,1)
+    n = random.choice([-1,1])
+    y = RADIUS*n*math.sqrt(1-x*x)
+    x *= RADIUS
+    input_pos.append(point(x+node_pos[node].x ,y+node_pos[node].y))
+  for node in g.get_output_ids():
+    x = random.uniform(-1,1)
+    n = random.choice([-1,1])
+    y = RADIUS*n*math.sqrt(1-x*x)
+    x *= RADIUS
+    output_pos.append(point(x+node_pos[node].x ,y+node_pos[node].y))
 
+  return node_pos,input_pos,output_pos
 
 
 

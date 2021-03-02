@@ -4,6 +4,7 @@ sys.path.append('../') # allows us to fetch files from the project root
 
 import unittest
 from modules.open_digraph import *
+from modules.draw_graph import *
 
 class InitTest(unittest.TestCase):
 
@@ -212,7 +213,7 @@ class addersTest(unittest.TestCase):
   def test_addersNodes(self):
     u0 = node(0, 'i', [], [])
     g = open_digraph([0],[],[u0])
-    g.add_node('j',[0],[])
+    g.add_node('j',[],[0])
     
 class wellFormed(unittest.TestCase):
   def test_is_well_formed(self):
@@ -230,6 +231,8 @@ class wellFormed(unittest.TestCase):
     self.assertEqual(g4.is_well_formed(), True)
     g5 = open_digraph([0], [0], [n0, n2, n3])
     self.assertEqual(g5.is_well_formed(), False)
+
+
 
 if __name__ == '__main__':  # the following code is called only when
   unittest.main()           # precisely this file is run.
