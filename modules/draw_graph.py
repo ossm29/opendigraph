@@ -7,12 +7,16 @@ from modules.open_digraph import *
 random.seed(datetime.now())
 WIDTH = 500
 HEIGHT = 500
-RADIUS = 100
+RADIUS = 50
 
 class point:
   def __init__(self,x,y):
     self.x = x
     self.y = y
+  def __str__(self):
+    return "(" + str(self.x) + ", " + str(self.y) + ")"
+  def __repr__(self):
+    return "point"+str(self)
   def n(self):
     return (round(self.x), round(self.y)) # return a simple tuple de int
   def copy(self):
@@ -54,17 +58,18 @@ ImageDraw.ImageDraw.node = drawnode
 def drawgraph(self, g, node_pos,  input_pos, output_pos, method='manual'):
   '''doc : todo'''
   if(method=='manual'):
-    self.arrows(point(0,0), point(WIDTH/2,HEIGHT/2))
     for i in range(len(input_pos)):
-      #self.arrows(input_pos[i], node_pos[g.get_input_ids()[i]])
-      self.arrows(point(0,0), point(WIDTH/2,HEIGHT/2))
+      self.arrows(input_pos[i], node_pos[g.get_input_ids()[i]])
     for i in range(len(output_pos)):
       self.arrows(output_pos[i], node_pos[g.get_output_ids()[i]])
     for n in g.get_nodes():
       self.node(node_pos[n.get_id()], n, verbose=True)
   if(method =='random'):
     np,ip,op = random_layout(g)
-    self.graph(g,np,ip,op,method = 'manual')
+    print(np)
+    print(ip)
+    print(op)
+    self.graph(g,np,ip,op,method='manual')
 
 ImageDraw.ImageDraw.graph = drawgraph
 
@@ -72,7 +77,7 @@ def random_layout(g): #
   node_pos = {}
   input_pos = []
   output_pos = []  
-  tuplist = [(i,j) for i in range(WIDTH) for j in range(HEIGHT)]
+  tuplist = [(i + 50,j + 50) for i in range(WIDTH - 100) for j in range(HEIGHT - 100)]
   tirage = random.sample(tuplist,len(g.get_nodes()))
   tmp = 0
   for node in g.get_nodes():

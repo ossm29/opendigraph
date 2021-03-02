@@ -4,6 +4,9 @@ sys.path.append('../') # allows us to fetch files from the project root
 import math
 import unittest
 from modules.draw_graph import *
+import time
+
+
 
 class pointtest(unittest.TestCase):
   def test_point(self):
@@ -26,8 +29,7 @@ class pointtest(unittest.TestCase):
     node_pos = {}
     node_pos[1] = point(100, 100)
     node_pos[2] = point(200, 200)
-    draw.graph(g, node_pos, [], [],'manual')
-    
+    draw.graph(g, node_pos, [], [],'random')
     image.save("test.jpg")
   
 class test_display(unittest.TestCase):
@@ -40,5 +42,4 @@ class test_display(unittest.TestCase):
     x = random_layout(g1)
 
 if __name__ == '__main__': # the following code is called only when
-  random.seed(datetime.now())
   unittest.main() 
