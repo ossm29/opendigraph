@@ -7,7 +7,8 @@ from modules.open_digraph import *
 random.seed(datetime.now())
 WIDTH = 500
 HEIGHT = 500
-RADIUS = 50
+RADIUS = 25
+POINTEUR = 50
 
 class point:
   def __init__(self,x,y):
@@ -48,7 +49,7 @@ ImageDraw.ImageDraw.arrows = drawarrows # we define the method 'arrows'
                                           # from the function 'arrows' above
 
 def drawnode(self, p, node, verbose=False):
-  self.ellipse((p.x - 25, p.y - 25, p.x + 25, p.y + 25), fill='white', outline='red') 
+  self.ellipse((p.x - RADIUS, p.y - RADIUS, p.x + RADIUS, p.y + RADIUS), fill='white', outline='red') 
   self.text((p.x - 6*len(node.label)/2,p.y - 6), node.label, fill='black')
   if verbose :
     self.text((p.x - 3,p.y + 12), str(node.id), fill='black')
@@ -59,16 +60,13 @@ def drawgraph(self, g, node_pos,  input_pos, output_pos, method='manual'):
   '''doc : todo'''
   if(method=='manual'):
     for i in range(len(input_pos)):
-      self.arrows(input_pos[i], node_pos[g.get_input_ids()[i]])
+      self.arrows(input_pos[i], point(node_pos[g.get_input_ids()[i]].x - (node_pos[g.get_input_ids()[i]].x - input_pos[i].x)*RADIUS/POINTEUR, (node_pos[g.get_input_ids()[i]].y - (node_pos[g.get_input_ids()[i]].y - input_pos[i].y)*RADIUS/POINTEUR)))
     for i in range(len(output_pos)):
-      self.arrows(output_pos[i], node_pos[g.get_output_ids()[i]])
+      self.arrows(node_pos[g.get_output_ids()[i]], output_pos[i])
     for n in g.get_nodes():
       self.node(node_pos[n.get_id()], n, verbose=True)
   if(method =='random'):
     np,ip,op = random_layout(g)
-    print(np)
-    print(ip)
-    print(op)
     self.graph(g,np,ip,op,method='manual')
 
 ImageDraw.ImageDraw.graph = drawgraph
@@ -86,14 +84,14 @@ def random_layout(g): #
   for node in g.get_input_ids():
     x = random.uniform(-1,1)
     n = random.choice([-1,1])
-    y = RADIUS*n*math.sqrt(1-x*x)
-    x *= RADIUS
+    y = POINTEUR*n*math.sqrt(1-x*x)
+    x *= POINTEUR
     input_pos.append(point(x+node_pos[node].x ,y+node_pos[node].y))
   for node in g.get_output_ids():
     x = random.uniform(-1,1)
     n = random.choice([-1,1])
-    y = RADIUS*n*math.sqrt(1-x*x)
-    x *= RADIUS
+    y = POINTEUR*n*math.sqrt(1-x*x)
+    x *= POINTEUR
     output_pos.append(point(x+node_pos[node].x ,y+node_pos[node].y))
 
   return node_pos,input_pos,output_pos
