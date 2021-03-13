@@ -18,8 +18,8 @@ class point:
     return "(" + str(self.x) + ", " + str(self.y) + ")"
   def __repr__(self):
     return "point"+str(self)
-  def n(self):
-    return (round(self.x), round(self.y)) # return a simple tuple de int
+  def n(self):# return a simple tuple of int
+    return (round(self.x), round(self.y)) 
   def copy(self):
     return point(self.x, self.y)
   def __add__(self, p2):
@@ -30,6 +30,11 @@ class point:
     return point(self.x - p2.x, self.y - p2.y)
   def __eq__(self, p2):
     return (self.x == p2.x and self.y == p2.y)
+  def rotate(self, theta, c):
+    delta = math.sqrt((self.x - c.x)*(self.x - c.x) + (self.y - c.y)*(self.y - c.y))
+    alpha = math.acos(abs(self.y - c.y)/delta)
+    self.x = c.x + delta*math.cos(theta + alpha)
+    self.y = c.y + delta*math.sin(theta + alpha)
 
 def drawarrows(self, p1, p2):
   '''doc : todo'''

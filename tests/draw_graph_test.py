@@ -30,6 +30,25 @@ class pointtest(unittest.TestCase):
     node_pos[1] = point(100, 100)
     node_pos[2] = point(200, 200)
     draw.graph(g, node_pos, [], [],'random')
+    """
+    p1 = point(50, 50)
+    p2 = point(50, 100)
+    draw.arrows(p1, p2)
+    p2.rotate(math.pi/4, p1)
+    draw.arrows(p1, p2)
+    p2.rotate(2*math.pi/4, p1)
+    draw.arrows(p1, p2)
+    p2.rotate(3*math.pi/4, p1)
+    draw.arrows(p1, p2)
+    p2.rotate(4*math.pi/4, p1)
+    draw.arrows(p1, p2)
+    p2.rotate(5*math.pi/4, p1)
+    draw.arrows(p1, p2)
+    p2.rotate(6*math.pi/4, p1)
+    draw.arrows(p1, p2)
+    p2.rotate(7*math.pi/4, p1)
+    draw.arrows(p1, p2)
+    """
     image.save("test.jpg")
   
 class test_display(unittest.TestCase):
