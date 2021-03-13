@@ -7,8 +7,9 @@ from modules.open_digraph import *
 random.seed(datetime.now())
 WIDTH = 500
 HEIGHT = 500
-RADIUS = 25
-POINTEUR = 50
+RADIUS = 25 #rayon du cercle présentant les noeuds
+POINTEUR = 50 #taille des fleches qui pointent les inputs/outputs
+START = 100 #coordonnée en x et y du point de départ du cercle de circle_layout
 
 class point:
   def __init__(self,x,y):
@@ -35,6 +36,7 @@ class point:
     alpha = math.acos(abs(self.y - c.y)/delta)
     self.x = c.x + delta*math.cos(theta + alpha)
     self.y = c.y + delta*math.sin(theta + alpha)
+    print(self.x, " ", self.y)
 
 def drawarrows(self, p1, p2):
   '''doc : todo'''
@@ -78,6 +80,9 @@ def drawgraph(self, g, node_pos,  input_pos, output_pos, method='manual'):
   if(method =='random'):
     np,ip,op = random_layout(g)
     self.graph(g,np,ip,op,method='manual')
+  if(method == 'circle'):
+    np,ip,op = circle_layout(g)
+    self.graph(g,np,ip,op,method='manual')
   
 
 ImageDraw.ImageDraw.graph = drawgraph
@@ -104,8 +109,34 @@ def random_layout(g): #
     y = POINTEUR*n*math.sqrt(1-x*x)
     x *= POINTEUR
     output_pos.append(point(x+node_pos[node].x ,y+node_pos[node].y))
-
   return node_pos,input_pos,output_pos
+
+def circle_layout(g):
+  node_pos = {}
+  input_pos = []
+  output_pos = []
+  centre = point(WIDTH/2, HEIGHT/2)
+  n = len(g.get_nodes())
+  p = point(START, START)
+  for node in g.get_nodes():
+    print(p)
+    node_pos[node.get_id()] = p
+    p.rotate(2*math.pi/n, centre)
+  for node in g.get_input_ids():
+    x = random.uniform(-1,1)
+    n = random.choice([-1,1])
+    y = POINTEUR*n*math.sqrt(1-x*x)
+    x *= POINTEUR
+    input_pos.append(point(x+node_pos[node].x ,y+node_pos[node].y))
+  for node in g.get_output_ids():
+    x = random.uniform(-1,1)
+    n = random.choice([-1,1])
+    y = POINTEUR*n*math.sqrt(1-x*x)
+    x *= POINTEUR
+    output_pos.append(point(x+node_pos[node].x ,y+node_pos[node].y))
+  return node_pos,input_pos,output_pos
+  
+
 
 
 
