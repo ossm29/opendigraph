@@ -23,8 +23,8 @@ class pointtest(unittest.TestCase):
     height = HEIGHT
     image = Image.new("RGB", (width, height), 'white')
     draw = ImageDraw.Draw(image)
-    n1 = node(1, 'i', [], [])
-    n2 = node(2, 'j', [], [])
+    n1 = node(1, 'i', [2], [])
+    n2 = node(2, 'j', [], [1])
     g = open_digraph([1,2], [1,2], [n1, n2])
     node_pos = {}
     node_pos[1] = point(100, 100)

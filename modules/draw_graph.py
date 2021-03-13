@@ -64,6 +64,11 @@ ImageDraw.ImageDraw.node = drawnode
 def drawgraph(self, g, node_pos,  input_pos, output_pos, method='manual'):
   '''doc : todo'''
   if(method=='manual'):
+    #dessin des arêtes :
+    for node in g.get_nodes():
+      for child in node.get_children_ids():
+        delta = math.sqrt((node_pos[child].x - node_pos[node.get_id()].x)*(node_pos[child].x - node_pos[node.get_id()].x) + (node_pos[child].y - node_pos[node.get_id()].y)*(node_pos[child].y - node_pos[node.get_id()].y))
+        self.arrows(node_pos[node.get_id()], point(node_pos[child].x - (node_pos[child].x - node_pos[node.get_id()].x)*RADIUS/delta, node_pos[child].y - (node_pos[child].y - node_pos[node.get_id()].y)*RADIUS/delta))
     for i in range(len(input_pos)):
       self.arrows(input_pos[i], point(node_pos[g.get_input_ids()[i]].x - (node_pos[g.get_input_ids()[i]].x - input_pos[i].x)*RADIUS/POINTEUR, (node_pos[g.get_input_ids()[i]].y - (node_pos[g.get_input_ids()[i]].y - input_pos[i].y)*RADIUS/POINTEUR)))
     for i in range(len(output_pos)):
@@ -73,6 +78,7 @@ def drawgraph(self, g, node_pos,  input_pos, output_pos, method='manual'):
   if(method =='random'):
     np,ip,op = random_layout(g)
     self.graph(g,np,ip,op,method='manual')
+  
 
 ImageDraw.ImageDraw.graph = drawgraph
 
