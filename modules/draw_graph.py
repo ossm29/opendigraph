@@ -1,3 +1,5 @@
+#Oussama Konate et Thomas Delépine
+
 from PIL import Image, ImageDraw
 import math
 from datetime import datetime
