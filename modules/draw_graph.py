@@ -12,6 +12,7 @@ HEIGHT = 500
 RADIUS = 25 #rayon du cercle présentant les noeuds
 POINTEUR = 50 #taille des fleches qui pointent les inputs/outputs
 START = 100 #coordonnée en x et y du point de départ du cercle de circle_layout
+FLECHE = 10 #taille de la pointe de la fleche
 
 class point:
   def __init__(self,x,y):
@@ -34,20 +35,21 @@ class point:
   def __eq__(self, p2):
     return (self.x == p2.x and self.y == p2.y)
   def rotate(self, theta, c):
-    delta = math.sqrt((self.x - c.x)*(self.x - c.x) + (self.y - c.y)*(self.y - c.y))
-    alpha = math.acos(abs(self.y - c.y)/delta)
-    self.x = c.x + delta*math.cos(theta + alpha)
-    self.y = c.y + delta*math.sin(theta + alpha)
-    print(self.x, " ", self.y)
+    x = (self.x - c.x)*math.cos(theta) + (self.y - c.y)*math.sin(theta) + c.x
+    y = -(self.x - c.x)*math.sin(theta) + (self.y - c.y)*math.cos(theta) + c.y
+    self.x = x
+    self.y = y
 
 def drawarrows(self, p1, p2):
   '''doc : todo'''
-  self.line([p1.n(), p2.n()], 'black')
-  theta = math.acos((p2.x - p1.x)/math.sqrt((p2.x - p1.x)*(p2.x - p1.x) + (p2.y - p1.y)*(p2.y - p1.y)))
-  if p2.y < p1.y:
-    theta = -theta
-  r = 10.0
-  alpha = math.pi/6
+  rad = math.sqrt((p2.x - p1.x)*(p2.x - p1.x) + (p2.y - p1.y)*(p2.y - p1.y))
+  if not rad == 0 :
+    self.line([p1.n(), p2.n()], 'black')
+    theta = math.acos((p2.x - p1.x)/rad)
+    if p2.y < p1.y:
+      theta = -theta
+    r = FLECHE
+    alpha = math.pi/6
 
   t1 = point(p2.x - r*math.cos(theta + alpha), p2.y - r*math.sin(theta + alpha))
   t2 = point(p2.x - r*math.cos(theta - alpha), p2.y - r*math.sin(theta - alpha))
@@ -121,8 +123,8 @@ def circle_layout(g):
   n = len(g.get_nodes())
   p = point(START, START)
   for node in g.get_nodes():
-    print(p)
-    node_pos[node.get_id()] = p
+    p2 = p.copy()
+    node_pos[node.get_id()] = p2
     p.rotate(2*math.pi/n, centre)
   for node in g.get_input_ids():
     x = random.uniform(-1,1)
