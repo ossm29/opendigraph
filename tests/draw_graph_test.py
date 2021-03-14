@@ -66,8 +66,34 @@ class test_display(unittest.TestCase):
     n1 = node(1, 'j', [0], [])
     n2 = node(2, 'j', [3], [3])
     n3 = node(3, 'j', [2], [2])
-    g1 = open_digraph([0, 1], [1], [n0, n1])
+    g1 = open_digraph([0, 1], [1], [n0, n1, n2, n3])
     x = random_layout(g1)
+
+class test_fun(unittest.TestCase):
+  def test_slope_angle(self):
+    p1 = point(100, 100)
+    p2 = point(200, 200)
+    self.assertEqual(slope_angle(p1, p2), math.pi/4)
+    self.assertEqual(slope_angle(p2, p1), math.pi/4)
+    p3 = point(100, 300)
+    self.assertEqual(slope_angle(p1, p3), math.pi/2)
+    self.assertEqual(slope_angle(p3, p1), math.pi/2)
+    self.assertEqual(slope_angle(p2, p3), -math.pi/4)
+    self.assertEqual(slope_angle(p3, p2), -math.pi/4)
+    self.assertEqual(slope_angle(p3, p3), math.pi/2)
+    
+
+
 
 if __name__ == '__main__': # the following code is called only when
   unittest.main() 
+
+
+
+
+
+
+
+
+
+

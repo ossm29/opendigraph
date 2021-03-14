@@ -11,7 +11,7 @@ WIDTH = 500
 HEIGHT = 500
 RADIUS = 25 #rayon du cercle présentant les noeuds
 POINTEUR = 50 #taille des fleches qui pointent les inputs/outputs
-START = 100 #coordonnée en x et y du point de départ du cercle de circle_layout
+START = 125 #coordonnée en x et y du point de départ du cercle de circle_layout
 FLECHE = 10 #taille de la pointe de la fleche
 
 class point:
@@ -34,7 +34,7 @@ class point:
     return point(self.x - p2.x, self.y - p2.y)
   def __eq__(self, p2):
     return (self.x == p2.x and self.y == p2.y)
-  def rotate(self, theta, c):
+  def rotate(self, theta, c): #erreur avec c=point(0,0) (point is not defined)
     x = (self.x - c.x)*math.cos(theta) + (self.y - c.y)*math.sin(theta) + c.x
     y = -(self.x - c.x)*math.sin(theta) + (self.y - c.y)*math.cos(theta) + c.y
     self.x = x
@@ -115,7 +115,7 @@ def random_layout(g): #
     output_pos.append(point(x+node_pos[node].x ,y+node_pos[node].y))
   return node_pos,input_pos,output_pos
 
-def circle_layout(g):
+def circle_layout(g): #renvoie un layout affichant les noeuds en cercle autour du milieu de l'image
   node_pos = {}
   input_pos = []
   output_pos = []
@@ -139,7 +139,12 @@ def circle_layout(g):
     x *= POINTEUR
     output_pos.append(point(x+node_pos[node].x ,y+node_pos[node].y))
   return node_pos,input_pos,output_pos
-  
+
+def slope_angle(p1, p2):#renvoie l'angle entre le segment [p1, p2] et l'axe des abscisses
+  if(p1.x == p2.x):
+    return math.pi/2
+  else:
+    return math.atan((p2.y - p1.y)/(p2.x - p1.x))
 
 
 
