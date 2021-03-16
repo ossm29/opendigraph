@@ -34,11 +34,12 @@ class point:
     return point(self.x - p2.x, self.y - p2.y)
   def __eq__(self, p2):
     return (self.x == p2.x and self.y == p2.y)
-  def rotate(self, theta, c): #erreur avec c=point(0,0) (point is not defined)
-    x = (self.x - c.x)*math.cos(theta) + (self.y - c.y)*math.sin(theta) + c.x
-    y = -(self.x - c.x)*math.sin(theta) + (self.y - c.y)*math.cos(theta) + c.y
-    self.x = x
-    self.y = y
+def rotate(self, theta, c=point(0,0)): #erreur avec c=point(0,0) (point is not defined)
+  x = (self.x - c.x)*math.cos(theta) + (self.y - c.y)*math.sin(theta) + c.x
+  y = -(self.x - c.x)*math.sin(theta) + (self.y - c.y)*math.cos(theta) + c.y
+  self.x = x
+  self.y = y
+point.rotate = rotate
 
 def drawarrows(self, p1, p2, n=1, m=0):#ancienne v à la fin du fichier
   '''doc : todo'''
