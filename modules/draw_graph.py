@@ -40,21 +40,37 @@ class point:
     self.x = x
     self.y = y
 
-def drawarrows(self, p1, p2):
+def drawarrows(self, p1, p2, n=1, m=0):#ancienne v à la fin du fichier
   '''doc : todo'''
   rad = math.sqrt((p2.x - p1.x)*(p2.x - p1.x) + (p2.y - p1.y)*(p2.y - p1.y))
+  rad2 = math.sqrt((p1.x - p2.x)*(p1.x - p2.x) + (p1.y - p2.y)*(p1.y - p2.y))
+
   if not rad == 0 :
     self.line([p1.n(), p2.n()], 'black')
     theta = math.acos((p2.x - p1.x)/rad)
+    theta2 = math.acos((p1.x - p2.x)/rad2)
+
     if p2.y < p1.y:
       theta = -theta
+    if p1.y < p2.y:
+      theta2 = -theta2
     r = FLECHE
     alpha = math.pi/6
+  if(n > 0):
+    t1 = point(p2.x - r*math.cos(theta + alpha), p2.y - r*math.sin(theta + alpha))
+    t2 = point(p2.x - r*math.cos(theta - alpha), p2.y - r*math.sin(theta - alpha))
+    self.line([t1.n(), p2.n()], 'black')
+    self.line([t2.n(), p2.n()], 'black')
+    self.text((t2.x - 6,t2.y - 4), str(n), fill='black')
 
-  t1 = point(p2.x - r*math.cos(theta + alpha), p2.y - r*math.sin(theta + alpha))
-  t2 = point(p2.x - r*math.cos(theta - alpha), p2.y - r*math.sin(theta - alpha))
-  self.line([t1.n(), p2.n()], 'black')
-  self.line([t2.n(), p2.n()], 'black')
+  if(m > 0):
+    s1 = point(p1.x - r*math.cos(theta2 + alpha), p1.y - r*math.sin(theta2 + alpha))
+    s2 = point(p1.x - r*math.cos(theta2 - alpha), p1.y - r*math.sin(theta2 - alpha))
+    self.line([s1.n(), p1.n()], 'black')
+    self.line([s2.n(), p1.n()], 'black')
+    self.text((s1.x + 6,s1.y + 4), str(m), fill='black')
+
+
 
 ImageDraw.ImageDraw.arrows = drawarrows # we define the method 'arrows'
                                           # from the function 'arrows' above
@@ -146,7 +162,21 @@ def slope_angle(p1, p2):#renvoie l'angle entre le segment [p1, p2] et l'axe des 
   else:
     return math.atan((p2.y - p1.y)/(p2.x - p1.x))
 
+'''def drawarrows(self, p1, p2):
+  doc : todo
+  rad = math.sqrt((p2.x - p1.x)*(p2.x - p1.x) + (p2.y - p1.y)*(p2.y - p1.y))
+  if not rad == 0 :
+    self.line([p1.n(), p2.n()], 'black')
+    theta = math.acos((p2.x - p1.x)/rad)
+    if p2.y < p1.y:
+      theta = -theta
+    r = FLECHE
+    alpha = math.pi/6
 
+  t1 = point(p2.x - r*math.cos(theta + alpha), p2.y - r*math.sin(theta + alpha))
+  t2 = point(p2.x - r*math.cos(theta - alpha), p2.y - r*math.sin(theta - alpha))
+  self.line([t1.n(), p2.n()], 'black')
+  self.line([t2.n(), p2.n()], 'black')'''
 
 
 
