@@ -48,6 +48,7 @@ class NodeTest(unittest.TestCase):
     self.assertEqual(n2.label, self.n0.label)
     self.assertEqual(n2.id, self.n0.id)
     self.assertIsNot(n2, self.n0)
+  
 
 class changeGraph(unittest.TestCase):
   def test_change_id(self):
@@ -97,6 +98,28 @@ class GraphTest(unittest.TestCase):
     self.assertEqual(g2.nodes == self.g.nodes, True)
     self.assertIsNot(g2,self.g)
 
+  def test_degree(self):
+    g3 = self.g.copy()
+    a = node(0, 'i', [], [1])
+    b = node(1, 'j', [0], [3])
+    self.assertEqual(a.indegree(),0)
+    self.assertEqual(a.outdegree(),1)
+    self.assertEqual(a.degree(),1)
+    self.assertEqual(b.degree(),2)
+    self.assertEqual(g3.max_indegree(),1)
+    self.assertEqual(g3.max_outdegree(),1)
+    self.assertEqual(g3.max_degree(),1)
+    self.assertEqual(g3.min_indegree(),0)
+    self.assertEqual(g3.min_outdegree(),0)
+    self.assertEqual(g3.min_degree(),1)
+
+  def test_is_cyclic(self):
+    g4 = open_digraph([0],[0],[node(0,"i",[0],[0])])
+    g5 = open_digraph([],[],[])
+    g6 = self.g.copy()
+    self.assertEqual(g4.is_cyclic(),True)
+    self.assertEqual(g5.is_cyclic(),False)
+    self.assertEqual(g6.is_cyclic(),False)
 
 class gettersTest(unittest.TestCase):
 

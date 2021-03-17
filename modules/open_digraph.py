@@ -84,6 +84,17 @@ class node:
   def remove_child_id_all(self, id):#supprime toutes les occurences de l'ID (int) donné en paramètre dans la liste des ID des enfants
     self.children = remove_all(self.children, id)
 
+  def indegree(self): #retourne le degré entrant d'un noeud
+    return len(self.get_parents_ids())
+
+  def outdegree(self): #retourne le degré sortant d'un noeud
+    return len(self.get_children_ids())
+
+  def degree(self): #retourne le degré d'un noeud (entrant + sortant)
+    return len(self.get_parents_ids())+len(self.get_children_ids())
+    
+
+
 
 class open_digraph: # for open directed graph
 
@@ -295,12 +306,40 @@ class open_digraph: # for open directed graph
         adjMatrix[node.get_id()][childId] = adjMatrix[node.get_id()][childId] + 1
     return adjMatrix
 
+  def max_indegree(self): #retourne le degré entrant maximal du graphe
+    return max([node.indegree() for node in self.get_nodes()])
 
+  def max_outdegree(self): #retourne le degré sortant maximal du graphe
+    return max([node.outdegree() for node in self.get_nodes()])
+  
+  def max_degree(self): #retourne le degré maximal du graphe
+    return max([node.degree() for node in self.get_nodes()])
 
+  def min_indegree(self):  #retourne le degré entrant minimal du graphe
+    return min([node.indegree() for node in self.get_nodes()])
 
+  def min_outdegree(self): #retourne le degré sortant minimal du graphe
+    return min([node.outdegree() for node in self.get_nodes()])
+  
+  def min_degree(self): #retourne le degré  minimal du graphe
+    return min([node.degree() for node in self.get_nodes()])
 
-
-
+  def is_cyclic(self): #test de cyclicité
+    #nodes = self.get_nodes()
+    if(self.get_nodes() == []):
+        return False
+    else:
+        flag = False
+        #print(self.get_nodes())
+        for node in self.get_nodes():
+            if(node.outdegree == 0):
+                flag = True
+                g = self.remove_node_by_id(node.get_id())
+                break
+        if(flag):
+            return g.is_cyclic()
+        else:
+            return True
 
 
 
