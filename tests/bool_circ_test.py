@@ -14,6 +14,11 @@ class boolTest(unittest.TestCase):
     c1 = bool_circ(g)
     c2 = bool_circ(g)
     self.assertEqual(c1, c2)
+  
+  def test_is_well_formed(self):
+    n0 = node(0, '|', [], [1])
+    n1 = node(1, 'j', [0], [])
+    g = bool_circ([0], [1], [n0, n1])
 
 if __name__ == '__main__':  # the following code is called only when
   unittest.main()           # precisely this file is run.   

@@ -325,22 +325,20 @@ class open_digraph: # for open directed graph
     return min([node.degree() for node in self.get_nodes()])
 
   def is_cyclic(self): #test de cyclicité
-    #nodes = self.get_nodes()
     if(self.get_nodes() == []):
         return False
     else:
-        flag = False
-        #print(self.get_nodes())
-        for node in self.get_nodes():
-            if(node.outdegree == 0):
-                flag = True
-                g = self.remove_node_by_id(node.get_id())
-                break
-        if(flag):
-            return g.is_cyclic()
-        else:
-            return True
-
+      flag = False
+      for node in self.get_nodes():
+        if(node.outdegree() == 0):
+          flag = True
+          g = self.copy()
+          g.remove_node_by_id(node.get_id())
+          break
+      if(flag):
+        return g.is_cyclic()
+      else:
+        return True
 
 
 

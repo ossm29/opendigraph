@@ -23,3 +23,25 @@ class bool_circ(open_digraph):
   
   def convert(self):
     return open_digraph(self.inputs, self.outputs, self.nodes)
+
+  def is_well_formed(self):
+    for node in self.get_nodes():
+      if((node.label == "&" || node.label == "|") && (node.outdegree() != 1 || node.indegree() != 2)):
+        return False
+      elif((node.label == "∼")&&(node.indegree != 1 || node.outdegree != 1)):
+        return False
+      elif(node.label == "" && node.indegree != 1 ):
+        return False
+      else:
+        return False
+  return !self.is_cyclic()
+
+
+
+
+
+
+
+
+
+
