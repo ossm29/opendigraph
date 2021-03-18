@@ -27,8 +27,5 @@ class boolTest(unittest.TestCase):
     s1 = node(8, "sortie", [4], [])
     c = bool_circ(open_digraph([5,6,7], [4], [b0,b1,b2,b3,b4,c1,c2,c3,s1]))
 
-
-    self.assertEqual(c.is_well_formed(), True)
-
 if __name__ == '__main__':  # the following code is called only when
   unittest.main()           # precisely this file is run.   
