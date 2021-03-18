@@ -9,6 +9,8 @@ from modules.draw_graph import *
 class bool_circ(open_digraph):
   def __init__(self, g):
     super().__init__(g.inputs.copy(), g.outputs.copy(), [node.copy() for node in g.get_nodes()])
+    if(not self.is_well_formed()):
+      raise NameError('g is not a well formed boolean circ')
 
   def __eq__(self,other):
     return ((self.get_input_ids()== other.get_input_ids()) and (self.get_output_ids() == other.get_output_ids()) 
