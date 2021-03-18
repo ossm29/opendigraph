@@ -26,14 +26,20 @@ class bool_circ(open_digraph):
 
   def is_well_formed(self):
     for node in self.get_nodes():
-      if((node.label == "&" or node.label == "|") and (node.outdegree() != 1 or node.indegree() != 2)):
+      if((node.label == "&" or node.label == "|") and (node.outdegree() != 1 or node.indegree() != 2)):#noeud est un OU ou un ET
+        print("a")
+        print(node)
         return False
-      elif((node.label == "∼") and (node.indegree != 1 or node.outdegree != 1)):
+      if((node.label == "∼") and (node.indegree() != 1 or node.outdegree() != 1)):#noeud est un not
+        print("b")
         return False
-      elif(node.label == "" and node.indegree != 1 ):
+      if(node.label == "" and node.indegree() != 1 ): #noeud est une copie
+        print("c")
         return False
-      else:
+      if((node.label == "1" or node.label == "0") and (node.indegree() != 0 or node.outdegree() != 1)): #noeud est une constante
+        print("d")
         return False
+      
     return (not self.is_cyclic())
 
 
