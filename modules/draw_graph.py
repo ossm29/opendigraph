@@ -76,8 +76,8 @@ def drawarrows(self, p1, p2, m = 1, method = 'bezier'):
       self.bezier(p1, paux, p2)
       t1 = p + (FLECHE/math.sqrt(2))*(normale - tangenteNormalisee)
       t2 = p - (FLECHE/math.sqrt(2))*(normale + tangenteNormalisee)
-      self.line([t1.n(), p2.n()], 'black')
-      self.line([t2.n(), p2.n()], 'black')
+      self.line([t1.n(), p.n()], 'black')
+      self.line([t2.n(), p.n()], 'black')
 
 ImageDraw.ImageDraw.arrows = drawarrows # we define the method 'arrows'
                                           # from the function 'arrows' above
