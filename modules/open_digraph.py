@@ -107,6 +107,8 @@ class open_digraph: # for open directed graph
     self.inputs = inputs
     self.outputs = outputs
     self.nodes = {node.id:node for node in nodes} # self.nodes: <int,node> dict
+    if(not self.is_well_formed()):
+      raise NameError('the graph isn\'t well formed')
 
   def __eq__(self,other):
     return ((self.get_input_ids()== other.get_input_ids()) and (self.get_output_ids() == other.get_output_ids()) 

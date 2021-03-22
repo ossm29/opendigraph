@@ -5,8 +5,10 @@ import math
 from datetime import datetime
 from modules.open_digraph import *
 
-
 random.seed(datetime.now())
+
+"""variables globales : """
+
 WIDTH = 500
 HEIGHT = 500
 RADIUS = 25 #rayon du cercle présentant les noeuds
@@ -43,10 +45,10 @@ def rotate(self, theta, c=point(0,0)): #erreur avec c=point(0,0) (point is not d
 point.rotate = rotate
 
 
-def drawarrows(self, p1, p2, m = 1, method = 'bezier'):
+def drawarrows(self, p1, p2, m = 1, method = 'bezier'):#dessine un flêche
   '''m est le nombre d'arrete de p1 vers p2
     méthod : stroke si juste un flêche + nombre
-             berier si courbe de bezier'''
+             bezier si courbe de bezier'''
   
   if method == 'stroke':
     rad = math.sqrt((p2.x - p1.x)*(p2.x - p1.x) + (p2.y - p1.y)*(p2.y - p1.y))
@@ -129,7 +131,7 @@ def drawgraph(self, g, node_pos,  input_pos, output_pos, method='manual'):
 
 ImageDraw.ImageDraw.graph = drawgraph
 
-def random_layout(g): #
+def random_layout(g): #renvoie un layout aléatoire, g un graph
   node_pos = {}
   input_pos = []
   output_pos = []  
@@ -153,7 +155,7 @@ def random_layout(g): #
     output_pos.append(point(x+node_pos[node].x ,y+node_pos[node].y))
   return node_pos,input_pos,output_pos
 
-def circle_layout(g): #renvoie un layout affichant les noeuds en cercle autour du milieu de l'image
+def circle_layout(g): #renvoie un layout affichant les noeuds en cercle autour du milieu de l'image, g un graph
   node_pos = {}
   input_pos = []
   output_pos = []
@@ -185,7 +187,7 @@ def slope_angle(p1, p2):#renvoie l'angle entre le segment [p1, p2] et l'axe des 
     return math.atan((p2.y - p1.y)/(p2.x - p1.x))
 
 def Bezier(self,p0,paux,p1, dt=0.01):
-#construit une courbe de bezier de p0 à p1.
+#construit une courbe de bezier de p0 à p1, paux est alors le paramètre p'.
   Blast = p0
   t = dt
   while(t < 1):
@@ -196,38 +198,7 @@ def Bezier(self,p0,paux,p1, dt=0.01):
     
 ImageDraw.ImageDraw.bezier = Bezier
 
-#memo:
 
-'''def drawarrows(self, p1, p2, n=1, m=0):#ancienne v à la fin du fichier
-  
-  rad = math.sqrt((p2.x - p1.x)*(p2.x - p1.x) + (p2.y - p1.y)*(p2.y - p1.y))
-  rad2 = math.sqrt((p1.x - p2.x)*(p1.x - p2.x) + (p1.y - p2.y)*(p1.y - p2.y))
-
-  if not rad == 0 :
-    self.line([p1.n(), p2.n()], 'black')
-    theta = math.acos((p2.x - p1.x)/rad)
-    theta2 = math.acos((p1.x - p2.x)/rad2)
-
-    if p2.y < p1.y:
-      theta = -theta
-    if p1.y < p2.y:
-      theta2 = -theta2
-    r = FLECHE
-    alpha = math.pi/6
-  if(n > 0):
-    t1 = point(p2.x - r*math.cos(theta + alpha), p2.y - r*math.sin(theta + alpha))
-    t2 = point(p2.x - r*math.cos(theta - alpha), p2.y - r*math.sin(theta - alpha))
-    self.line([t1.n(), p2.n()], 'black')
-    self.line([t2.n(), p2.n()], 'black')
-    self.text((t2.x - 6,t2.y - 4), str(n), fill='black')
-
-  if(m > 0):
-    s1 = point(p1.x - r*math.cos(theta2 + alpha), p1.y - r*math.sin(theta2 + alpha))
-    s2 = point(p1.x - r*math.cos(theta2 - alpha), p1.y - r*math.sin(theta2 - alpha))
-    self.line([s1.n(), p1.n()], 'black')
-    self.line([s2.n(), p1.n()], 'black')
-    self.text((s1.x + 6,s1.y + 4), str(m), fill='black')
-'''
 
 
 
