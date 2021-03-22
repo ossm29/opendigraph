@@ -19,13 +19,15 @@ class pointtest(unittest.TestCase):
     self.assertEqual(2*p1, point(2, 4))
 
   def test_draw(self):
+
     width = WIDTH
     height = HEIGHT
     image = Image.new("RGB", (width, height), 'white')
     draw = ImageDraw.Draw(image)
     #graph compliqué:
-    n0 = node(0, 'i', [1], [1, 3, 6])
-    n1 = node(1, 'j', [0], [0, 3, 6])
+    
+    n0 = node(0, 'i', [1, 1, 1], [1, 3, 6])
+    n1 = node(1, 'j', [0], [0,0,0, 3, 6])
     n2 = node(2, 'k', [3], [3])
     n3 = node(3, 'l', [0, 1, 2], [2])
     n4 = node(4, "m", [5], [6, 7])
@@ -36,10 +38,9 @@ class pointtest(unittest.TestCase):
     
     '''
     #graph simple:
-    n0 = node(0,'i', [1,1,2], [1,1,1])
-    n1 = node(1, 'j', [0,0,0], [0,0,2,2,2])
-    n2 = node(2,'k', [1,1,1], [0])
-    g = open_digraph([], [], [n0, n1, n2])
+    n0 = node(0,'i', [1], [1])
+    n1 = node(1, 'j', [0], [0])
+    g = open_digraph([], [], [n0, n1])
     '''
     node_pos = {}
     node_pos[1] = point(100, 100)
@@ -65,6 +66,7 @@ class pointtest(unittest.TestCase):
     draw.arrows(p1, p2)
     p2.rotate(math.pi/4, p1)
     draw.arrows(p1, p2)
+    draw.bezier(point(50, 50), point(75,75), point(50, 100))
     """
     
     image.save("test.jpg")
