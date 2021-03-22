@@ -23,7 +23,7 @@ class pointtest(unittest.TestCase):
     height = HEIGHT
     image = Image.new("RGB", (width, height), 'white')
     draw = ImageDraw.Draw(image)
-    
+    #graph compliqué:
     n0 = node(0, 'i', [1], [1, 3, 6])
     n1 = node(1, 'j', [0], [0, 3, 6])
     n2 = node(2, 'k', [3], [3])
@@ -35,6 +35,7 @@ class pointtest(unittest.TestCase):
     g = open_digraph([0, 1, 2], [1, 7], [n0, n1, n2, n3, n4, n5, n6, n7])
     
     '''
+    #graph simple:
     n0 = node(0,'i', [1,1,2], [1,1,1])
     n1 = node(1, 'j', [0,0,0], [0,0,2,2,2])
     n2 = node(2,'k', [1,1,1], [0])

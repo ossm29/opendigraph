@@ -85,10 +85,11 @@ def drawarrows(self, p1, p2, m = 1):
 
   t1 = point(p2.x - r*math.cos(theta + alpha), p2.y - r*math.sin(theta + alpha))
   t2 = point(p2.x - r*math.cos(theta - alpha), p2.y - r*math.sin(theta - alpha))
+  t3 = point(p2.x - 2*r*math.cos(theta + alpha), p2.y - 2*r*math.sin(theta + alpha))
   self.line([t1.n(), p2.n()], 'black')
   self.line([t2.n(), p2.n()], 'black')
   if(m>0):
-    self.text((t1.x + 6,t1.y + 4), str(m), fill='black')
+    self.text((t3.x + 6,t3.y + 4), str(m), fill='black')
 
 ImageDraw.ImageDraw.arrows = drawarrows # we define the method 'arrows'
                                           # from the function 'arrows' above
@@ -110,7 +111,7 @@ def drawgraph(self, g, node_pos,  input_pos, output_pos, method='manual'):
       while i < len(node.get_children_ids()):
         child = node.get_children_ids()[i]
         m = 1
-        while(i + 1 < len(node.get_children_ids()) and node.get_children_ids()[i] == child):
+        while(i + 1 < len(node.get_children_ids()) and node.get_children_ids()[i + 1] == child):
           i += 1
           m += 1
         delta = math.sqrt((node_pos[child].x - node_pos[node.get_id()].x)*(node_pos[child].x - node_pos[node.get_id()].x) + (node_pos[child].y - node_pos[node.get_id()].y)*(node_pos[child].y - node_pos[node.get_id()].y))    
