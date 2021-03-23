@@ -13,6 +13,7 @@ class boolTest(unittest.TestCase):
     g = open_digraph([0], [1], [n0, n1])
     c1 = bool_circ(g)
     c2 = bool_circ(g)
+    print(c1)
     self.assertEqual(c1, c2)
   
   def test_is_well_formed(self):

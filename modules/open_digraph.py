@@ -93,8 +93,12 @@ class node:
   def degree(self): #retourne le degré d'un noeud (entrant + sortant)
     return len(self.get_parents_ids())+len(self.get_children_ids())
     
-
-
+  def increment(self,n): #auxilliaire de shift_indices
+    for i in range(len(self.children)):
+      self.children[i] += n
+    for j in range(len(self.parents)):
+      self.parents[j] += n
+    self.id += n
 
 class open_digraph: # for open directed graph
 
@@ -107,8 +111,8 @@ class open_digraph: # for open directed graph
     self.inputs = inputs
     self.outputs = outputs
     self.nodes = {node.id:node for node in nodes} # self.nodes: <int,node> dict
-    if(not self.is_well_formed()):
-      raise NameError('the graph isn\'t well formed')
+    #if(not self.is_well_formed()):
+      #raise NameError('the graph isn\'t well formed')
 
   def __eq__(self,other):
     return ((self.get_input_ids()== other.get_input_ids()) and (self.get_output_ids() == other.get_output_ids()) 
@@ -342,5 +346,49 @@ class open_digraph: # for open directed graph
       else:
         return True
 
+  def min_id(self): #retourne l'id min du graphe
+    return min(self.get_node_ids())
 
+  def max_id(self): #retourne l'id max du graphe
+    return max(self.get_node_ids())
 
+  def shift_indices (self,n):
+    dict = {}
+    l = len(self.get_nodes())
+    for i in range(1,l+1):
+      node = self.get_nodes()[l-i]
+      node.increment(n)
+      #node.change_id(node.get_id(),node.get_id()+n)
+    for i in range(l):
+      node = self.get_nodes()[i]
+      dict[node.get_id()] = node
+    self.nodes = dict
+    #incrément de input
+    for i in range(len(self.get_input_ids())):
+      self.get_input_ids()[i] += n
+    #incrément de output
+    for i in range(len(self.get_output_ids())):
+      self.get_output_ids()[i] += n
+  
+  def iparallel(self,g): #ajoute g à self (modifie self)
+    self.shift_indices(self.max_id()-g.min_id()+1)
+    self.inputs += g.inputs
+    self.outputs += g.outputs
+    self.nodes = {**self.nodes, **g.nodes}
+  
+  def parallel(self,g): #ajoute g à self (sans modification)
+    res = self.copy()
+    res.iparallel(g)
+    return res
+
+  def icompose(self, g): #composition séquentielle de self et g
+    #test
+    if(len(self.get_input_ids()) != len(g.get_output_ids())):
+      raise NameError('entrée et sortie incompatibles')
+    g.shift_indices(self.max_id()-g.min_id()+1)
+    self.nodes = {**self.nodes, **g.nodes}
+    self.inputs = g.inputs
+    for i in range(len(g.outputs)):
+      self.add_edge(g.outputs[i],self.inputs[i])
+
+    

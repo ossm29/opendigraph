@@ -41,9 +41,3 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
 
 
 
-
-
-
-
-
-

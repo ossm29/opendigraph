@@ -90,7 +90,8 @@ class GraphTest(unittest.TestCase):
     self.n0 = node(0, 'i', [], [1])
     self.n1 = node(1, 'j', [0], [])
     self.g = open_digraph([0], [1], [self.n0, self.n1])
-  
+    self.h = open_digraph([0],[0],[node(0,"i",[0],[0])])
+
   def test_copyGraph(self):
     g2 = self.g.copy()
     self.assertEqual(g2.inputs ,self.g.inputs)
@@ -120,6 +121,21 @@ class GraphTest(unittest.TestCase):
     self.assertEqual(g4.is_cyclic(),True)
     self.assertEqual(g5.is_cyclic(),False)
     self.assertEqual(g6.is_cyclic(),False)
+
+  def test_shift_indices(self):
+    g7 = self.g.copy()
+    g7.shift_indices(3)
+    self.assertEqual(g7.get_node_ids(),[3,4])
+
+  def test_iparallel(self):
+    g8 = self.g.copy()
+    g9 = self.h.copy()
+    g8.iparallel(g9)
+    print(g8)
+  
+  def test_icompose(self):
+    self.g.icompose(self.h)
+    print(self.g)
 
 class gettersTest(unittest.TestCase):
 
