@@ -381,7 +381,7 @@ class open_digraph: # for open directed graph
     res.iparallel(g)
     return res
 
-  def icompose(self, g): #composition séquentielle de self et g
+  def icompose(self, g): #composition séquentielle de self et g (modifie self)
     #test
     if(len(self.get_input_ids()) != len(g.get_output_ids())):
       raise NameError('entrée et sortie incompatibles')
@@ -390,5 +390,11 @@ class open_digraph: # for open directed graph
     self.inputs = g.inputs
     for i in range(len(g.outputs)):
       self.add_edge(g.outputs[i],self.inputs[i])
+  
+  def compose(self,g): #composition séquentielle de self et g (sans modification)
+    res = self.copy()
+    res.icompose(g)
+    return res
+  
+  def connected_components(self): #renvoie le nombre de composantes connexes, et un dictionnaire qui associe `a chaque id de noeuds du graphe un int qui correspond `a une composante connexe
 
-    
