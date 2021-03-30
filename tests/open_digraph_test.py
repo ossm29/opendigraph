@@ -153,7 +153,8 @@ class GraphTest(unittest.TestCase):
     n7 = node(7, "p", [4, 5], [])
     g2 = open_digraph([0, 1, 2], [1, 7], [n0, n1, n2, n3, n4, n5, n6, n7])
 
-    print(g2.connected_components())
+  def test_djikstra(self):
+    print(self.g.djikstra(0))
 
 
 class gettersTest(unittest.TestCase):
