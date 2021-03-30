@@ -100,6 +100,11 @@ class node:
       self.parents[j] += n
     self.id += n
 
+  def inverse(self):
+    res = self.copy()
+    res.parents, res.children = res.children, res.parents
+    return res
+
 class open_digraph: # for open directed graph
 
   def __init__(self, inputs, outputs, nodes):
@@ -396,5 +401,51 @@ class open_digraph: # for open directed graph
     res.icompose(g)
     return res
   
+  def inverse(self):
+    res = self.copy()
+    for id in res.get_node_ids():
+      res.nodes[id] = res.nodes[id].inverse()
+    res.inputs, res.outputs = res.outputs, res.inputs
+    return res
+
+  def DFS(self,node): 
+    res = [False for i in range(len(self.get_nodes()))]
+
+    def aux(node): #auxilliaire
+      if(not res[node.get_id()]):
+        res[node.get_id()] = True
+        for child in node.children:
+          aux(self.nodes[child])
+
+    aux(node)
+    return res
+    
+
+
   def connected_components(self): #renvoie le nombre de composantes connexes, et un dictionnaire qui associe `a chaque id de noeuds du graphe un int qui correspond `a une composante connexe
+    dict = {}
+    for i in self.get_node_ids():
+      dict[i] = 0
+    nbcc = 0
+    #g = self.inverse()
+    for i in self.get_node_ids():
+      if(dict.get(i)==0):
+        tab1 = self.DFS(self.get_node_by_id(i))
+        print(tab1)
+        #tab2 = g.DFS(g.get_node_by_id(i))
+        #print(tab2)
+        for j in self.get_node_ids():
+          if(tab1[j]): #if(tab1[j] and tab2[j]):
+            dict[j] = nbcc
+        nbcc+=1
+    return dict
+
+
+
+
+
+
+
+
+
 

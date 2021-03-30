@@ -48,7 +48,10 @@ class NodeTest(unittest.TestCase):
     self.assertEqual(n2.label, self.n0.label)
     self.assertEqual(n2.id, self.n0.id)
     self.assertIsNot(n2, self.n0)
-  
+
+  def test_inverseNode(self):
+    n2 = self.n0.copy()
+    self.assertEqual(n2.inverse(),node(0, 'i', [1], []))
 
 class changeGraph(unittest.TestCase):
   def test_change_id(self):
@@ -99,6 +102,10 @@ class GraphTest(unittest.TestCase):
     self.assertEqual(g2.nodes == self.g.nodes, True)
     self.assertIsNot(g2,self.g)
 
+  def test_inverseGraph(self):
+    g2 = self.g.copy()
+    self.assertEqual(g2.inverse(),open_digraph([1], [0], [self.n0.inverse(), self.n1.inverse()]))
+
   def test_degree(self):
     g3 = self.g.copy()
     a = node(0, 'i', [], [1])
@@ -131,11 +138,23 @@ class GraphTest(unittest.TestCase):
     g8 = self.g.copy()
     g9 = self.h.copy()
     g8.iparallel(g9)
-    print(g8)
   
   def test_icompose(self):
     self.g.icompose(self.h)
-    print(self.g)
+  
+  def test_connected_components(self):
+    n0 = node(0, 'i', [1, 1, 1], [1, 3])
+    n1 = node(1, 'j', [0], [0,0,0, 3])
+    n2 = node(2, 'k', [3], [3])
+    n3 = node(3, 'l', [0, 1, 2], [2])
+    n4 = node(4, "m", [5], [6, 7])
+    n5 = node(5, "n", [], [4, 6, 7])
+    n6 = node(6, "o", [4, 5], [])
+    n7 = node(7, "p", [4, 5], [])
+    g2 = open_digraph([0, 1, 2], [1, 7], [n0, n1, n2, n3, n4, n5, n6, n7])
+
+    print(g2.connected_components())
+
 
 class gettersTest(unittest.TestCase):
 
