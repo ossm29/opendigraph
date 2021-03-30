@@ -440,9 +440,28 @@ class open_digraph: # for open directed graph
         nbcc+=1
     return dict
 
-
-
-
+  def djikstra(self,src,direction=None):
+    Q = [src]
+    dist = {src:0}
+    prev = {}
+    while Q != []:
+      u = min(Q , key = lambda x : dist[x])
+      Q.remove(u)
+      if(direction==-1):
+        neighbours = self.get_node_by_id(u).get_parents_ids() 
+      if(direction== 1):
+        neighbours = self.get_node_by_id(u).get_children_ids() 
+      else:
+        neighbours =  self.get_node_by_id(u).get_parents_ids()+self.get_node_by_id(u).get_children_ids() 
+      for v in neighbours:
+        if not v in dist.keys():
+          Q.append(v)
+        if (not v in dist.keys()) or (dist[v] > dist[u]+1):
+          dist[v] = dist[u]+1
+          prev[v] = u
+    
+    return dist,prev
+          
 
 
 
