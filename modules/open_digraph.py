@@ -408,36 +408,31 @@ class open_digraph: # for open directed graph
     res.inputs, res.outputs = res.outputs, res.inputs
     return res
 
-  def DFS(self,node): 
-    res = [False for i in range(len(self.get_nodes()))]
-
-    def aux(node): #auxilliaire
-      if(not res[node.get_id()]):
-        res[node.get_id()] = True
-        for child in node.children:
-          aux(self.nodes[child])
-
-    aux(node)
-    return res
+  def DFS(self,node,see,act,dict,toSee): 
+    dict[node] = act
+    see[node] = True
+    toSee.remove(node)
+    for i in self.get_node_by_id(node).get_children_ids():
+      if(not see[i]):
+        self.DFS(i,see,act,dict,toSee)
+    for i in self.get_node_by_id(node).get_parents_ids():
+      if(not see[i]):
+        self.DFS(i,see,act,dict,toSee)
     
 
 
   def connected_components(self): #renvoie le nombre de composantes connexes, et un dictionnaire qui associe `a chaque id de noeuds du graphe un int qui correspond `a une composante connexe
     dict = {}
-    for i in self.get_node_ids():
-      dict[i] = 0
+    see = {}
+    act = 0
     nbcc = 0
-    #g = self.inverse()
-    for i in self.get_node_ids():
-      if(dict.get(i)==0):
-        tab1 = self.DFS(self.get_node_by_id(i))
-        print(tab1)
-        #tab2 = g.DFS(g.get_node_by_id(i))
-        #print(tab2)
-        for j in self.get_node_ids():
-          if(tab1[j]): #if(tab1[j] and tab2[j]):
-            dict[j] = nbcc
-        nbcc+=1
+    toSee = self.get_node_ids().copy()
+    for i in toSee:
+      see[i] = False
+    while(toSee != []):
+      self.DFS(toSee[0],see,act,dict,toSee)
+      act += 1
+      nbcc += 1
     return dict
 
   def dijkstra(self,src,direction=None, tgt=None):
@@ -482,6 +477,35 @@ class open_digraph: # for open directed graph
       if ancestor in dist2.keys():
         res[ancestor] = (dist1[ancestor], dist2[ancestor])
     return res
+
+  def tri_topologique(self):#renvoie un tableau de tableaux d'id des noeuds
+    g = self.copy()
+    cpt = 0
+    res = []
+    while(g.get_nodes() != []):
+      tmp = []
+      for node in g.get_nodes():
+        if(node.indegree() == 0):
+          tmp.append(node.get_id())
+      g.remove_node_by_ids(tmp)
+      if tmp == []:
+        raise NameError('ERROR : g is cyclic')
+      res.append(tmp)
+      cpt += 1
+    return res
+
+  def node_prof(self, node):#prend en paramètre un noeud et renvoie sa profondeur (int)
+    tmp = self.tri_topologique()
+    for i in range(len(tmp)):
+      if node.get_id() in tmp[i]:
+        return i
+    raise NameError('ERROR : node not in graph')
+
+  def graph_prof(self):
+    return len(self.tri_topologique()) - 1
+  
+
+
 
 
 
