@@ -143,19 +143,46 @@ class GraphTest(unittest.TestCase):
     self.g.icompose(self.h)
   
   def test_connected_components(self):
-    n0 = node(0, 'i', [1, 1, 1], [1, 3])
-    n1 = node(1, 'j', [0], [0,0,0, 3])
+    n0 = node(0, 'i', [1, 1, 1], [1, 3, 6])
+    n1 = node(1, 'j', [0], [0,0,0, 3, 6])
     n2 = node(2, 'k', [3], [3])
     n3 = node(3, 'l', [0, 1, 2], [2])
     n4 = node(4, "m", [5], [6, 7])
     n5 = node(5, "n", [], [4, 6, 7])
-    n6 = node(6, "o", [4, 5], [])
+    n6 = node(6, "o", [0, 1, 4, 5], [])
     n7 = node(7, "p", [4, 5], [])
-    g2 = open_digraph([0, 1, 2], [1, 7], [n0, n1, n2, n3, n4, n5, n6, n7])
+    g = open_digraph([0, 1, 2], [1, 7], [n0, n1, n2, n3, n4, n5, n6, n7])
+    #print(g.connected_components())
 
-  def test_djikstra(self):
-    print(self.g.djikstra(0))
-
+  def test_dijkstra(self):
+    n0 = node(0, 'i', [1, 1, 1], [1, 3, 6])
+    n1 = node(1, 'j', [0], [0,0,0, 3, 6])
+    n2 = node(2, 'k', [3], [3])
+    n3 = node(3, 'l', [0, 1, 2], [2])
+    n4 = node(4, "m", [5], [6, 7])
+    n5 = node(5, "n", [], [4, 6, 7])
+    n6 = node(6, "o", [0, 1, 4, 5], [])
+    n7 = node(7, "p", [4, 5], [])
+    g = open_digraph([0, 1, 2], [1, 7], [n0, n1, n2, n3, n4, n5, n6, n7])
+    #print(g.dijkstra(7))
+    self.assertEqual(g.shortest_path(7,2), [7, 4, 6, 0, 3, 2])
+    self.assertEqual(g.shortest_path(2,7), [2,3,0,6,4,7])
+    self.assertEqual(g.shortest_path(2,5), [2, 3, 0, 6, 5])
+    self.assertEqual(g.shortest_path(7,7), [7])
+  
+  def test_ancestors(self):
+    n0 = node(0, "", [], [3])
+    n1 = node(1, "", [], [4,5,8])
+    n2 = node(2,"",[],[4])
+    n3 = node(3, "", [0], [5, 6, 7])
+    n4 = node(4, "", [1,2], [6])
+    n5 = node(5, "", [1, 3], [7])
+    n6 = node(6, "", [3,4], [8,9])
+    n7 = node(7,"",[3,5], [])
+    n8 = node(8,"",[1,6],[])
+    n9 = node(9,"",[6], [])
+    g = open_digraph([0,2], [7], [n0,n1,n2,n3,n4,n5,n6,n7,n8,n9])
+    self.assertEqual(g.common_ancestors_dist(5, 8), {0 : (2, 3), 3 : (1, 2), 1 : (1, 1)})
 
 class gettersTest(unittest.TestCase):
 

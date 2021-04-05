@@ -440,16 +440,18 @@ class open_digraph: # for open directed graph
         nbcc+=1
     return dict
 
-  def djikstra(self,src,direction=None):
+  def dijkstra(self,src,direction=None, tgt=None):
     Q = [src]
     dist = {src:0}
     prev = {}
     while Q != []:
       u = min(Q , key = lambda x : dist[x])
       Q.remove(u)
+      if u == tgt:
+        return dist, prev
       if(direction==-1):
         neighbours = self.get_node_by_id(u).get_parents_ids() 
-      if(direction== 1):
+      elif(direction== 1):
         neighbours = self.get_node_by_id(u).get_children_ids() 
       else:
         neighbours =  self.get_node_by_id(u).get_parents_ids()+self.get_node_by_id(u).get_children_ids() 
@@ -459,9 +461,45 @@ class open_digraph: # for open directed graph
         if (not v in dist.keys()) or (dist[v] > dist[u]+1):
           dist[v] = dist[u]+1
           prev[v] = u
-    
     return dist,prev
+
+  def shortest_path(self, u, v):
+    if(u == v):
+      return [u]
+    dist, prev = self.dijkstra(u, tgt=v)
+    node = prev[v]
+    path = [v]
+    while node != u:
+      path = [node] + path
+      node = prev[node] 
+    return [u] + path
+
+  def common_ancestors_dist(self, node1, node2):
+    dist1, prev1, = self.dijkstra(node1, direction = -1)
+    dist2, prev2, = self.dijkstra(node2, direction = -1)
+    res = {}
+    for ancestor in dist1.keys():
+      if ancestor in dist2.keys():
+        res[ancestor] = (dist1[ancestor], dist2[ancestor])
+    return res
+
+
+
           
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
