@@ -503,6 +503,8 @@ class open_digraph: # for open directed graph
     return len(self.tri_topologique()) - 1
   
   def longest_path(self, u, v):
+    if(u == v):
+      return 0, [u]
     i = self.node_prof(self.nodes[u])
     n = self.graph_prof()
     dist = {u: 0}
@@ -522,7 +524,17 @@ class open_digraph: # for open directed graph
           dist[w] = tmp + 1
           prev[w] = biggestancestor
         if w == v:
-          return dist, prev
+          break
+    if v in dist.keys():
+      res = dist[v]
+      node = prev[v]
+      path = [v]
+      while node != u:
+        path = [node] + path
+        node = prev[node] 
+      return dist[v], [u] + path
+    else:
+      raise NameError('ERROR : v not in dist.keys()')
 
 
 
