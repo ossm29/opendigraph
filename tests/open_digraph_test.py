@@ -183,7 +183,9 @@ class GraphTest(unittest.TestCase):
     n9 = node(9,"",[6], [])
     g = open_digraph([0,2], [7], [n0,n1,n2,n3,n4,n5,n6,n7,n8,n9])
     self.assertEqual(g.common_ancestors_dist(5, 8), {0 : (2, 3), 3 : (1, 2), 1 : (1, 1)})
+    print(g.longest_path(1, 2))
 
+    
   def test_tri_topologique(self):
     n0 = node(0, "", [], [3])
     n1 = node(1, "", [], [4,5,8])

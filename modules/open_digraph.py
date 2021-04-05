@@ -419,8 +419,6 @@ class open_digraph: # for open directed graph
       if(not see[i]):
         self.DFS(i,see,act,dict,toSee)
     
-
-
   def connected_components(self): #renvoie le nombre de composantes connexes, et un dictionnaire qui associe `a chaque id de noeuds du graphe un int qui correspond `a une composante connexe
     dict = {}
     see = {}
@@ -504,6 +502,29 @@ class open_digraph: # for open directed graph
   def graph_prof(self):
     return len(self.tri_topologique()) - 1
   
+  def longest_path(self, u, v):
+    i = self.node_prof(self.nodes[u])
+    n = self.graph_prof()
+    dist = {u: 0}
+    prev = {}
+    tri_topologique = self.tri_topologique()
+    lk = tri_topologique[i]
+    for j in range(i+1, n+1):
+      for w in tri_topologique[j]:
+        tmp = -1
+        biggestancestor = None
+        for parent in self.nodes[w].get_parents_ids():
+          if parent in dist.keys():
+            if dist[parent]> tmp:
+              tmp = dist[parent]
+              biggestancestor = parent
+        if tmp > -1:
+          dist[w] = tmp + 1
+          prev[w] = biggestancestor
+        if w == v:
+          return dist, prev
+
+
 
 
 
