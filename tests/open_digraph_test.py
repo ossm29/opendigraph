@@ -25,6 +25,13 @@ class InitTest(unittest.TestCase):
     self.assertEqual(g.nodes[0], n0)
     self.assertEqual(g.nodes[1], n1)
 
+  def test_fusion(self):
+    n0 = node(0, 'i', [], [1])
+    n1 = node(1, 'j', [0], [])
+    g = open_digraph([0], [1], [n0, n1])
+    g.fusion(0, 1)
+    self.assertEqual(g, open_digraph([0], [0], [node(0, "", [0], [0])]))
+
 class EqTest(unittest.TestCase):
   def test_eq_node(self):
     self.assertEqual(node(0, 'i', [], [1,2])==node(1, 'j', [0], []), False)

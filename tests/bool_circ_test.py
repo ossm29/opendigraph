@@ -13,7 +13,6 @@ class boolTest(unittest.TestCase):
     g = open_digraph([0], [1], [n0, n1])
     c1 = bool_circ(g)
     c2 = bool_circ(g)
-    print(c1)
     self.assertEqual(c1, c2)
   
   def test_is_well_formed(self):
@@ -28,5 +27,24 @@ class boolTest(unittest.TestCase):
     s1 = node(8, "sortie", [4], [])
     c = bool_circ(open_digraph([5,6,7], [4], [b0,b1,b2,b3,b4,c1,c2,c3,s1]))
 
+  def test_generation(self):
+    b = parse_parentheses("((x0)&((x1)&(x2)))|((x1)&(~(x2)))")
+    print(b)
+
 if __name__ == '__main__':  # the following code is called only when
-  unittest.main()           # precisely this file is run.   
+  unittest.main()  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+           # precisely this file is run.   

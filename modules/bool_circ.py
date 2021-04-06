@@ -38,6 +38,40 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
         return False     
     return (not self.is_cyclic())
 
+def parse_parentheses(s):
+  g = open_digraph([], [0], [node(0, '', [], [])])
+  current_node = 0
+  s2 = ''
+  for char in s:
+    if char == '(':
+      g.nodes[current_node].label += s2
+      current_node = g.add_node('', [], [current_node])
+      s2 = ''
+    elif char == ')':
+      g.nodes[current_node].label += s2
+      current_node = g.nodes[current_node].children[0]
+      s2 = ''
+    else:
+      s2 += char
+  return g
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
