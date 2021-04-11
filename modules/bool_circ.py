@@ -53,6 +53,19 @@ def parse_parentheses(s):
       s2 = ''
     else:
       s2 += char
+
+  for i in range(len(g.get_nodes())):
+    nLocal = g.nodes[i]
+    label = nLocal.get_label()
+    if(not label in ["|", "&", "~"]):
+      g.add_input_id(nLocal.get_id())
+  print(g)
+  for i in range(len(g.get_input_ids())):
+    for j in range(i + 1, len(g.get_input_ids())):
+      if(g.nodes[g.get_input_ids()[i]].get_label() == g.nodes[g.get_input_ids()[j]].get_label()):
+        print(g.nodes[g.get_input_ids()[i]].get_label(), " ", i, " ", j)
+        g.fusion(g.get_input_ids()[i], g.get_input_ids()[j])
+    
   return g
         
 

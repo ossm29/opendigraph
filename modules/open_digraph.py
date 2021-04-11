@@ -551,6 +551,16 @@ class open_digraph: # for open directed graph
     for i in range(len(self.nodes[a].parents)):
       if(self.nodes[a].parents[i] == b):
         self.nodes[a].parents[i] = a
+
+    for nodeID in self.nodes[b].parents:
+      for i in range(len(self.nodes[nodeID].children)):
+        if self.nodes[nodeID].children[i] == b:
+          self.nodes[nodeID].children[i] = a
+    for nodeID in self.nodes[b].children:
+      for i in range(len(self.nodes[nodeID].parents)):
+        if self.nodes[nodeID].parents[i] == b:
+          self.nodes[nodeID].parents[i] = a
+
     for i in range(len(self.inputs)):
       if(self.inputs[i] == b):
         self.inputs[i] = a
