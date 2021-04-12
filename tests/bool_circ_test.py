@@ -28,13 +28,13 @@ class boolTest(unittest.TestCase):
     c = bool_circ(open_digraph([5,6,7], [4], [b0,b1,b2,b3,b4,c1,c2,c3,s1]))
 
   def test_generation(self):
-    print(parse_parentheses("((x0)|((x1)|(x2)))&((x1)|(~(x2)))", "((x0)&(~(x1)))|(x2)", fusion_flag=False))
+    print(parse_parentheses("((x0)|((x1)|(x2)))&((x1)|(~(x2)))", "((x0)&(~(x1)))|(x2)"))
 
 
     
 
 if __name__ == '__main__':  # the following code is called only when
-  unittest.main()  
+  unittest.main()           # precisely this file is run.
   
   
   
@@ -49,4 +49,4 @@ if __name__ == '__main__':  # the following code is called only when
   
   
   
-           # precisely this file is run.   
+              

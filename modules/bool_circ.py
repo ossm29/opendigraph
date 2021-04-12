@@ -39,31 +39,35 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
     return (not self.is_cyclic())
 
 def parse_parentheses(*s, fusion_flag=True):
-  #creation du graph
-  g = open_digraph([], [0], [node(0, '', [], [])])
-  #creations des noeuds et ajouts au graph
-  current_node = 0
-  s2 = ''
+  graphs = []
   for prop in s:
+    #creation du graph
+    local = open_digraph([], [0], [node(0, '', [], [])])
+    #creations des noeuds et ajouts au graph
+    current_node = 0
+    s2 = ''
     for char in prop:
       if char == '(':
-        g.nodes[current_node].label += s2
-        current_node = g.add_node('', [], [current_node])
+        local.nodes[current_node].label += s2
+        current_node = local.add_node('', [], [current_node])
         s2 = ''
       elif char == ')':
-        g.nodes[current_node].label += s2
-        current_node = g.nodes[current_node].children[0]
+        local.nodes[current_node].label += s2
+        current_node = local.nodes[current_node].children[0]
         s2 = ''
       else:
         s2 += char
   #gestion des inputs
-    for i in range(len(g.get_nodes())):  
-      n_local = g.nodes[i]      #n_local est un node
+    for i in range(len(local.get_nodes())):  
+      n_local = local.nodes[i]      #n_local est un node
       label = n_local.get_label()
       if(not label in ["|", "&", "~", ""]):
-        if(not n_local.id in g.get_input_ids()):
-          g.add_input_id(n_local.get_id())
-  print(g)
+        if(not n_local.id in local.get_input_ids()):
+          local.add_input_id(n_local.get_id())
+    graphs.append(local)
+  g = graphs[0]
+  for i in range(1, len(graphs)):
+    g.iparallel(graphs[i])
   if fusion_flag:
     #fusion
     to_fuse = {}
@@ -75,7 +79,6 @@ def parse_parentheses(*s, fusion_flag=True):
           to_fuse[n_local.get_label()] = [n_local.get_id()]
     for i in to_fuse.keys():
       if(not i in ["|", "&", "~", ""]):
-        print(i)
         for j in range(1,len(to_fuse[i])):
           g.fusion(to_fuse[i][0],to_fuse[i][j])
   #return
