@@ -38,8 +38,10 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
         return False     
     return (not self.is_cyclic())
 
-def parse_parentheses(*s):
+def parse_parentheses(*s, fusion_flag=True):
+  #creation du graph
   g = open_digraph([], [0], [node(0, '', [], [])])
+  #creations des noeuds et ajouts au graph
   current_node = 0
   s2 = ''
   for prop in s:
@@ -54,19 +56,29 @@ def parse_parentheses(*s):
         s2 = ''
       else:
         s2 += char
-
-    for i in range(len(g.get_nodes())):
-      nLocal = g.nodes[i]
-      label = nLocal.get_label()
-      if(not label in ["|", "&", "~"]):
-        g.add_input_id(nLocal.get_id())
+  #gestion des inputs
+    for i in range(len(g.get_nodes())):  
+      n_local = g.nodes[i]      #n_local est un node
+      label = n_local.get_label()
+      if(not label in ["|", "&", "~", ""]):
+        if(not n_local.id in g.get_input_ids()):
+          g.add_input_id(n_local.get_id())
   print(g)
-  for i in range(len(g.get_input_ids())):
-    for j in range(i + 1, len(g.get_input_ids())):
-      if(g.nodes[g.get_input_ids()[i]].get_label() == g.nodes[g.get_input_ids()[j]].get_label()):
-        print(g.nodes[g.get_input_ids()[i]].get_label(), " ", g.get_input_ids()[i], " ", g.get_input_ids()[j])
-        g.fusion(g.get_input_ids()[i], g.get_input_ids()[j])
-    
+  if fusion_flag:
+    #fusion
+    to_fuse = {}
+    for n_local in g.get_nodes():
+      if(n_local.get_label() in to_fuse.keys()):
+        to_fuse[n_local.get_label()].append(n_local.get_id())
+      else:
+        if(not n_local.get_label() in ["|", "&", "~", ""]):
+          to_fuse[n_local.get_label()] = [n_local.get_id()]
+    for i in to_fuse.keys():
+      if(not i in ["|", "&", "~", ""]):
+        print(i)
+        for j in range(1,len(to_fuse[i])):
+          g.fusion(to_fuse[i][0],to_fuse[i][j])
+  #return
   return g
         
 
