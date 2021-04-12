@@ -7,13 +7,15 @@ from modules.open_digraph import *
 from modules.draw_graph import *
 
 class bool_circ(open_digraph): #class représentant les circuits booléens
+  
   def __init__(self, g):
+    self.starters = {} #dict {int:str} un id, un nom de variables
     super().__init__(g.inputs.copy(), g.outputs.copy(), [node.copy() for node in g.get_nodes()])
-    if(not self.is_well_formed()):
-      raise NameError('g is not a well formed boolean circ')
+    #if(not self.is_well_formed()):
+      #raise NameError('g is not a well formed boolean circ')
 
   def __eq__(self,other):
-    return ((self.get_input_ids()== other.get_input_ids()) and (self.get_output_ids() == other.get_output_ids()) 
+    return ((self.get_input_ids() == other.get_input_ids()) and (self.get_output_ids() == other.get_output_ids()) 
     and ( self.get_nodes() == other.get_nodes()))
 
   def __str__(self):
@@ -29,12 +31,16 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
   def is_well_formed(self): #test si un circuit booléen est bien formé
     for node in self.get_nodes():
       if((node.label == "&" or node.label == "|") and (node.outdegree() != 1 or node.indegree() != 2)):#noeud est un OU ou un ET
+        print("a")
         return False
       if((node.label == "∼") and (node.indegree() != 1 or node.outdegree() != 1)):#noeud est un not   
+        print("b")
         return False
       if(node.label == "" and node.indegree() != 1 ): #noeud est une copie    
+        print("c")
         return False
       if((node.label == "1" or node.label == "0") and (node.indegree() != 0 or node.outdegree() != 1)): #noeud est une constante    
+        print("d")
         return False     
     return (not self.is_cyclic())
 
@@ -81,8 +87,12 @@ def parse_parentheses(*s, fusion_flag=True):
       if(not i in ["|", "&", "~", ""]):
         for j in range(1,len(to_fuse[i])):
           g.fusion(to_fuse[i][0],to_fuse[i][j])
-  #return
-  return g
+  print(g)
+  res = bool_circ(g)
+  for id in res.get_input_ids():
+    res.starters[id] = g.nodes[id].get_label()
+  #renvoie
+  return res
         
 
 
