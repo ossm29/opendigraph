@@ -537,9 +537,12 @@ class open_digraph: # for open directed graph
       raise NameError('ERROR : v not in dist.keys()')
 
   def fusion(self, a, b):#a, b : deux id de noeuds à fusionner
+    print(a, " ", b)
     newid = min(a, b)
     nodeA = self.get_node_by_id(a)
     nodeB = self.get_node_by_id(b)
+    print(nodeA)
+    print(nodeB)
     if nodeA.get_label() == nodeB.get_label():
       newlabel = nodeA.get_label()
     else:
@@ -560,13 +563,14 @@ class open_digraph: # for open directed graph
       for i in range(len(self.nodes[nodeID].parents)):
         if self.nodes[nodeID].parents[i] == b:
           self.nodes[nodeID].parents[i] = a
-
-    for i in range(len(self.inputs)):
-      if(self.inputs[i] == b):
-        self.inputs[i] = a
-    for i in range(len(self.outputs)):
-      if(self.outputs[i] == b):
-        self.outputs[i] = a
+    if(not a in self.inputs):
+      for i in range(len(self.inputs)):
+        if(self.inputs[i] == b):
+          self.inputs[i] = a
+    if(not a in self.outputs):
+      for i in range(len(self.outputs)):
+        if(self.outputs[i] == b):
+          self.outputs[i] = a
     self.remove_node_by_id(b)
 
 

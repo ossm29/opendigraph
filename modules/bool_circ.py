@@ -38,32 +38,33 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
         return False     
     return (not self.is_cyclic())
 
-def parse_parentheses(s):
+def parse_parentheses(*s):
   g = open_digraph([], [0], [node(0, '', [], [])])
   current_node = 0
   s2 = ''
-  for char in s:
-    if char == '(':
-      g.nodes[current_node].label += s2
-      current_node = g.add_node('', [], [current_node])
-      s2 = ''
-    elif char == ')':
-      g.nodes[current_node].label += s2
-      current_node = g.nodes[current_node].children[0]
-      s2 = ''
-    else:
-      s2 += char
+  for prop in s:
+    for char in prop:
+      if char == '(':
+        g.nodes[current_node].label += s2
+        current_node = g.add_node('', [], [current_node])
+        s2 = ''
+      elif char == ')':
+        g.nodes[current_node].label += s2
+        current_node = g.nodes[current_node].children[0]
+        s2 = ''
+      else:
+        s2 += char
 
-  for i in range(len(g.get_nodes())):
-    nLocal = g.nodes[i]
-    label = nLocal.get_label()
-    if(not label in ["|", "&", "~"]):
-      g.add_input_id(nLocal.get_id())
+    for i in range(len(g.get_nodes())):
+      nLocal = g.nodes[i]
+      label = nLocal.get_label()
+      if(not label in ["|", "&", "~"]):
+        g.add_input_id(nLocal.get_id())
   print(g)
   for i in range(len(g.get_input_ids())):
     for j in range(i + 1, len(g.get_input_ids())):
       if(g.nodes[g.get_input_ids()[i]].get_label() == g.nodes[g.get_input_ids()[j]].get_label()):
-        print(g.nodes[g.get_input_ids()[i]].get_label(), " ", i, " ", j)
+        print(g.nodes[g.get_input_ids()[i]].get_label(), " ", g.get_input_ids()[i], " ", g.get_input_ids()[j])
         g.fusion(g.get_input_ids()[i], g.get_input_ids()[j])
     
   return g
