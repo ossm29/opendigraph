@@ -85,11 +85,11 @@ class pointtest(unittest.TestCase):
     
     image.save("test.jpg")
 
-    g3 = random_bool_circ(7)
+    #g3 = random_bool_circ(7)
 
-    draw.graph(g3,node_pos,[],[],'manual')
+    #draw.graph(g3,node_pos,[],[],'manual')
 
-    image.save("random_bool_circ.jpg")
+    #image.save("random_bool_circ.jpg")
   
 class test_display(unittest.TestCase):
   def test_layout(self):
