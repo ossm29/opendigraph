@@ -5,6 +5,7 @@ import math
 from datetime import datetime
 from modules.open_digraph import *
 from modules.draw_graph import *
+from modules.matrix import *
 
 class bool_circ(open_digraph): #class représentant les circuits booléens
   
@@ -94,11 +95,30 @@ def parse_parentheses(*s, fusion_flag=True):
   #renvoie
   return res
         
+def random_bool_circ(n):
+  g = random_graph(n,2,form="DAG")
+  print(g)
+  for node in g.get_nodes():
+    if( node.parents == []):
+      g.inputs.append(node.get_id())
+    if(node.children == []):
+      g.outputs.append(node.get_id())
 
+  for node in g.get_nodes():
+    if(node.indegree() == node.outdegree() and node.indegree() == 1):
+      g.nodes[nodes.get_id()].label = '~'
+    if(node.indegree() > 1 and node.outdegree() == 1):
+      tmp = random.randint(0,2)
+      g.nodes[node.get_id()].label = '&' if tmp == 1 else "|"
+    if(node.indegree() > 1 and node.outdegree() > 1):
+      id1 = g.add_node('',node.get_parents_ids(),[])
+      id2 = g.add_node('',[],node.get_children_ids())
+      g.add_edge(id1,id2)
+      g.remove_node_by_id(node.get_id())
+  
+  print(g)
 
-
-
-
+  return g
 
 
 

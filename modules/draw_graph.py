@@ -4,6 +4,7 @@ from PIL import Image, ImageDraw
 import math
 from datetime import datetime
 from modules.open_digraph import *
+from modules.bool_circ import *
 
 random.seed(datetime.now())
 
@@ -97,6 +98,7 @@ def drawgraph(self, g, node_pos,  input_pos, output_pos, method='manual'):
   dessine un graph : method 'manual' si entrée manuelle des node_pos
                             'random' pour génération aléatoire des node_pos
                             'circle' pour une disposition en cercle des node_pos
+                            'topologique' pour une disposition en couches
                             '''
   if(method=='manual'):
     #dessin des arêtes :
@@ -126,6 +128,9 @@ def drawgraph(self, g, node_pos,  input_pos, output_pos, method='manual'):
     self.graph(g,np,ip,op,method='manual')
   if(method == 'circle'):
     np,ip,op = circle_layout(g)
+    self.graph(g,np,ip,op,method='manual')
+  if(method == 'topologique'):
+    np,ip,op = DAG_layout(g)
     self.graph(g,np,ip,op,method='manual')
   
 
@@ -178,6 +183,23 @@ def circle_layout(g): #renvoie un layout affichant les noeuds en cercle autour d
     y = POINTEUR*n*math.sqrt(1-x*x)
     x *= POINTEUR
     output_pos.append(point(x+node_pos[node].x ,y+node_pos[node].y))
+  return node_pos,input_pos,output_pos
+
+def DAG_layout(g): #renvoie des positions pour les noeuds, les entrées et les sorties du graphe donné en param`etre, et qu’on consid`ere acyclique
+  l = g.tri_topologique()
+  node_pos = {}
+  input_pos = []
+  output_pos = []
+
+  for i in range(len(l)):
+    for j in range(len(l[i])):
+      node_pos[l[i][j]] = point(j*WIDTH/len(l[i])+WIDTH/(2*len(l[i])),i*HEIGHT/len(l)+HEIGHT/(2*len(l)))
+
+  for element in g.get_input_ids():
+    input_pos.append(node_pos[element])
+  for element in g.get_output_ids():
+    output_pos.append(node_pos[element])
+
   return node_pos,input_pos,output_pos
 
 def slope_angle(p1, p2):#renvoie l'angle entre le segment [p1, p2] et l'axe des abscisses

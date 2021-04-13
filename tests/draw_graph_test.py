@@ -4,6 +4,7 @@ sys.path.append('../') # allows us to fetch files from the project root
 import math
 import unittest
 from modules.draw_graph import *
+
 import time
 
 
@@ -26,7 +27,7 @@ class pointtest(unittest.TestCase):
     draw = ImageDraw.Draw(image)
     #graph compliqué:
     
-    n0 = node(0, 'i', [1, 1, 1], [1, 3, 6])
+    '''n0 = node(0, 'i', [1, 1, 1], [1, 3, 6])
     n1 = node(1, 'j', [0], [0,0,0, 3, 6])
     n2 = node(2, 'k', [3], [3])
     n3 = node(3, 'l', [0, 1, 2], [2])
@@ -34,8 +35,21 @@ class pointtest(unittest.TestCase):
     n5 = node(5, "n", [], [4, 6, 7])
     n6 = node(6, "o", [0, 1, 4, 5], [])
     n7 = node(7, "p", [4, 5], [])
-    g = open_digraph([0, 1, 2], [1, 7], [n0, n1, n2, n3, n4, n5, n6, n7])
+    g = open_digraph([0, 1, 2], [1, 7], [n0, n1, n2, n3, n4, n5, n6, n7])'''
     
+    #def g2
+    n0 = node(0,'',[],[3])
+    n1 = node(1,'',[],[4,5])
+    n2 = node(2,'',[],[4])
+    n3 = node(3,'',[0],[5,6,7])
+    n4 = node(4,'',[1,2],[6])
+    n5 = node(5,'',[1,3],[7])
+    n6 = node(6,'',[3,4],[8,9])
+    n7 = node(7,'',[3,5],[])
+    n8 = node(8,'',[1,6],[])
+    n9 = node(9,'',[6],[])
+    g2 = open_digraph([0,2],[7],[n0,n1,n2,n3,n4,n5,n6,n7,n8,n9])
+
     '''
     #graph simple:
     n0 = node(0,'i', [1], [1])
@@ -45,7 +59,7 @@ class pointtest(unittest.TestCase):
     node_pos = {}
     node_pos[1] = point(100, 100)
     node_pos[2] = point(200, 200)
-    draw.graph(g, node_pos, [], [],'circle')
+    draw.graph(g2, node_pos, [], [],'topologique')
     """
     p1 = point(50, 50)
     p2 = point(50, 100)
@@ -70,6 +84,12 @@ class pointtest(unittest.TestCase):
     """
     
     image.save("test.jpg")
+
+    g3 = random_bool_circ(7)
+
+    draw.graph(g3,node_pos,[],[],'manual')
+
+    image.save("random_bool_circ.jpg")
   
 class test_display(unittest.TestCase):
   def test_layout(self):
