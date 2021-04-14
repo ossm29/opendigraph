@@ -10,10 +10,10 @@ from modules.matrix import *
 class bool_circ(open_digraph): #class représentant les circuits booléens
   
   def __init__(self, g):
-    self.starters = {} #dict {int:str} un id, un nom de variables
     super().__init__(g.inputs.copy(), g.outputs.copy(), [node.copy() for node in g.get_nodes()])
-    #if(not self.is_well_formed()):
-      #raise NameError('g is not a well formed boolean circ')
+    if(not self.is_well_formed()):
+      raise NameError('g is not a well formed boolean circ')
+    self.starters = {} #dict {int:str} un id, un nom de variables
 
   def __eq__(self,other):
     return ((self.get_input_ids() == other.get_input_ids()) and (self.get_output_ids() == other.get_output_ids()) 
@@ -88,11 +88,11 @@ def parse_parentheses(*s, fusion_flag=True):
       if(not i in ["|", "&", "~", ""]):
         for j in range(1,len(to_fuse[i])):
           g.fusion(to_fuse[i][0],to_fuse[i][j])
-  print(g)
   res = bool_circ(g)
   for id in res.get_input_ids():
     res.starters[id] = g.nodes[id].get_label()
   #renvoie
+  print(res.starters)
   return res
         
 def random_bool_circ(n):
@@ -115,8 +115,6 @@ def random_bool_circ(n):
       id2 = g.add_node('',[],node.get_children_ids())
       g.add_edge(id1,id2)
       g.remove_node_by_id(node.get_id())
-  
-  print(g)
 
   return g
 
