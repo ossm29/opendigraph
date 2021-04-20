@@ -32,7 +32,9 @@ class boolTest(unittest.TestCase):
     bc = parse_parentheses("(((x0)&((x1)&(x2)))|((x1)&(~(x2))))", "(((x0)&(~(x1)))|(x2))")
     self.assertEqual(bc, bool_circ(open_digraph([14,16,17], [11, 0], [node(11, '', [12], []), node(12, '|', [13,18],[11]), node(13, '&',[14,15],[12]), node(14, 'x0',[],[13,2]), node(15, '&', [16, 17],[13]), node(16, 'x1', [],[15,18,4]), node(17, 'x2', [], [15, 20, 1]), node(18, '&', [16, 20], [12]), node(20, '~', [17], [18]), node(0, '', [1], []), node(1, '|', [2,17], [0]), node(2, '&', [14, 4], [1]), node(4, '~', [16], [2]) ])))
 
-    
+  def test_random_bool_circ(self):
+    h = random_bool_circ(8)
+    #print(h)
 
 if __name__ == '__main__':  # the following code is called only when
   unittest.main()           # precisely this file is run.

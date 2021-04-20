@@ -31,18 +31,26 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
 
   def is_well_formed(self): #test si un circuit booléen est bien formé
     for node in self.get_nodes():
-      if((node.label == "&" or node.label == "|") and (node.outdegree() != 1 or node.indegree() != 2)):#noeud est un OU ou un ET
-        print("a")
+      if((node.label == "&" or node.label == "|") and (node.outdegree() != 1)):#noeud est un OU ou un ET
+        print(node.id)
+        print("code d'erreur a")
         return False
       if((node.label == "∼") and (node.indegree() != 1 or node.outdegree() != 1)):#noeud est un not   
-        print("b")
+        print(node.id)
+        print("code d'erreur b")
         return False
-      if(node.label == "" and node.indegree() != 1 ): #noeud est une copie    
-        print("c")
-        return False
+      if(node.label == "" and node.indegree() != 1 ): #noeud est une copie
+        print(node.id)
+        print("code d'erreur c")
+        #return False
       if((node.label == "1" or node.label == "0") and (node.indegree() != 0 or node.outdegree() != 1)): #noeud est une constante    
-        print("d")
-        return False     
+        print(node.id)
+        print("code d'erreur d")
+        return False    
+
+    if(self.is_cyclic()):
+      print("Y")
+    
     return (not self.is_cyclic())
 
 def parse_parentheses(*s, fusion_flag=True):
@@ -92,12 +100,12 @@ def parse_parentheses(*s, fusion_flag=True):
   for id in res.get_input_ids():
     res.starters[id] = g.nodes[id].get_label()
   #renvoie
-  print(res.starters)
+  #print(res.starters)
   return res
         
 def random_bool_circ(n):
-  g = random_graph(n,2,form="DAG")
-  print(g)
+  g = random_graph(n,1,form="DAG")
+
   for node in g.get_nodes():
     if( node.parents == []):
       g.inputs.append(node.get_id())
@@ -106,17 +114,39 @@ def random_bool_circ(n):
 
   for node in g.get_nodes():
     if(node.indegree() == node.outdegree() and node.indegree() == 1):
-      g.nodes[nodes.get_id()].label = '~'
+      g.nodes[node.get_id()].label = "~"
     if(node.indegree() > 1 and node.outdegree() == 1):
       tmp = random.randint(0,2)
-      g.nodes[node.get_id()].label = '&' if tmp == 1 else "|"
+      if (tmp == 1):
+        g.nodes[node.get_id()].label = "&" 
+      else :
+        g.nodes[node.get_id()].label ="|"
+      #g.nodes[node.get_id()].label = "&" if tmp == 1 else "|"
+
     if(node.indegree() > 1 and node.outdegree() > 1):
-      id1 = g.add_node('',node.get_parents_ids(),[])
-      id2 = g.add_node('',[],node.get_children_ids())
+      tmp = random.randint(0,2)
+      if (tmp == 1):
+        local = "&" 
+      else :
+        local = "|"
+      
+      id1 = g.add_node(local,node.get_parents_ids(),[])
+      id2 = g.add_node("",[],node.get_children_ids())
       g.add_edge(id1,id2)
+      for i in range(len(g.get_input_ids())):
+        if(g.get_input_ids()[i] == node.get_id()):
+          g.inputs[i] = id1
+        
+      for i in range(len(g.get_output_ids())):
+        if(g.get_output_ids()[i] == node.get_id()):
+          g.outputs[i] = id2
       g.remove_node_by_id(node.get_id())
 
-  return g
+    if(node.indegree() == 1 and node.outdegree() > 1):
+      g.nodes[node.get_id()].label = ""
+    
+  print(g)
+  return bool_circ(g)
 
 
 
