@@ -49,7 +49,7 @@ class pointtest(unittest.TestCase):
     n7 = node(7,'',[3,5],[])
     n8 = node(8,'',[1,6],[])
     n9 = node(9,'',[6],[])
-    g2 = open_digraph([0,2],[7],[n0,n1,n2,n3,n4,n5,n6,n7,n8,n9])
+    g2 = open_digraph([0,2],[7, 8, 9],[n0,n1,n2,n3,n4,n5,n6,n7,n8,n9])
     """
     '''
     #graph simple:
@@ -88,7 +88,7 @@ class pointtest(unittest.TestCase):
     draw.bezier(point(50, 50), point(75,75), point(50, 100))
     """
     
-    image.save("test.jpg")
+    image.save("test2.jpg")
 
     #g3 = random_bool_circ(7)
 
