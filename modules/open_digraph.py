@@ -138,7 +138,7 @@ class open_digraph: # for open directed graph
   def copy(self):
       #inputs : open_digraph
       #outputs : copy of the open_digraph
-      return open_digraph(self.inputs,self.outputs,[node.copy() for node in self.nodes.values()])
+      return open_digraph(self.inputs.copy(),self.outputs.copy(),[node.copy() for node in self.nodes.values()])
 
   #getters
   def get_input_ids(self): #return la liste des ID des noeuds d'entrée (int list)

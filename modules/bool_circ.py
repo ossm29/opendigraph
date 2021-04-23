@@ -8,9 +8,11 @@ from modules.draw_graph import *
 from modules.matrix import *
 
 class bool_circ(open_digraph): #class représentant les circuits booléens
-  
   def __init__(self, g):
-    super().__init__(g.inputs.copy(), g.outputs.copy(), [node.copy() for node in g.get_nodes()])
+    inp = g.inputs.copy()
+    out = g.outputs.copy()
+    ntab = [node.copy() for node in g.get_nodes()]
+    super().__init__(inp, out , ntab)
     if(not self.is_well_formed()):
       raise NameError('g is not a well formed boolean circ')
     self.starters = {} #dict {int:str} un id, un nom de variables
@@ -30,7 +32,8 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
     return open_digraph(self.inputs, self.outputs, self.nodes)
 
   def is_well_formed(self): #test si un circuit booléen est bien formé
-    for node in self.get_nodes():
+    tmp = self.copy()
+    for node in tmp.get_nodes():
       if((node.label == "&" or node.label == "|") and (node.outdegree() != 1)):#noeud est un OU ou un ET
         print(node.id)
         print("code d'erreur a")
@@ -46,12 +49,10 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
       if((node.label == "1" or node.label == "0") and (node.indegree() != 0 or node.outdegree() != 1)): #noeud est une constante    
         print(node.id)
         print("code d'erreur d")
-        return False    
-
-    if(self.is_cyclic()):
+        return False   
+    if(tmp.is_cyclic()):
       print("Y")
-    
-    return (not self.is_cyclic())
+    return (not tmp.is_cyclic())
 
 def parse_parentheses(*s, fusion_flag=True):
   graphs = []
@@ -144,12 +145,11 @@ def random_bool_circ(n):
 
     if(node.indegree() == 1 and node.outdegree() > 1):
       g.nodes[node.get_id()].label = ""
-  print(g)
   res = bool_circ(g)
-  
   for i in range(len(res.get_input_ids())):
-    res.nodes[res.get_input_ids()[i]].label = 'x' + str(i)
-  print(res)
+    res.nodes[res.get_input_ids()[i]].label = 'input ' + str(i)
+  for i in range(len(res.get_output_ids())):
+    res.nodes[res.get_output_ids()[i]].label = 'output ' + str(i)
   return res
 
 

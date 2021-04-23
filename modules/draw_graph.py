@@ -61,13 +61,13 @@ def drawarrows(self, p1, p2, m = 1, method = 'bezier'):#dessine un flêche
       r = FLECHE
       alpha = math.pi/6
 
-    t1 = point(p2.x - r*math.cos(theta + alpha), p2.y - r*math.sin(theta + alpha))
-    t2 = point(p2.x - r*math.cos(theta - alpha), p2.y - r*math.sin(theta - alpha))
-    t3 = point(p2.x - 2*r*math.cos(theta + alpha), p2.y - 2*r*math.sin(theta + alpha))
-    self.line([t1.n(), p2.n()], 'black')
-    self.line([t2.n(), p2.n()], 'black')
-    if(m>0):
-      self.text((t3.x + 6,t3.y + 4), str(m), fill='black')
+      t1 = point(p2.x - r*math.cos(theta + alpha), p2.y - r*math.sin(theta + alpha))
+      t2 = point(p2.x - r*math.cos(theta - alpha), p2.y - r*math.sin(theta - alpha))
+      t3 = point(p2.x - 2*r*math.cos(theta + alpha), p2.y - 2*r*math.sin(theta + alpha))
+      self.line([t1.n(), p2.n()], 'black')
+      self.line([t2.n(), p2.n()], 'black')
+      if(m>0):
+        self.text((t3.x + 6,t3.y + 4), str(m), fill='black')
   elif method == 'bezier':
     Bprime = p2 - p1
     normale = point(Bprime.y/math.sqrt(Bprime.x**2 + Bprime.y**2), -Bprime.x/math.sqrt(Bprime.x**2 + Bprime.y**2))
