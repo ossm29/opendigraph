@@ -104,15 +104,26 @@ def parse_parentheses(*s, fusion_flag=True):
   #print(res.starters)
   return res
         
-def random_bool_circ(n):
+def random_bool_circ(n, nbInputs = None, nbOutputs = None):
+  #step 1
   g = random_graph(n,1,form="DAG")
-
+  #step 2
   for node in g.get_nodes():
     if( node.parents == []):
       g.inputs.append(node.get_id())
     if(node.children == []):
       g.outputs.append(node.get_id())
+  '''
+  #step 2.5
+  allNodes = [g.nodes[i] for i in g.get_node_ids()]
+  if nbInputs != None:
+    n = len(g.get_input_ids())
+    if n < nbInputs:
+      for i in range(nbInputs - n):
+        nodeLocal = random.choice
+  '''
 
+  #step 3
   for node in g.get_nodes():
     if(node.indegree() == node.outdegree() and node.indegree() == 1):
       g.nodes[node.get_id()].label = "~"
