@@ -37,6 +37,7 @@ class pointtest(unittest.TestCase):
     n7 = node(7, "p", [4, 5], [])
     g = open_digraph([0, 1, 2], [1, 7], [n0, n1, n2, n3, n4, n5, n6, n7])'''
     
+    """
     #def g2
     n0 = node(0,'',[],[3])
     n1 = node(1,'',[],[4,5])
@@ -49,13 +50,16 @@ class pointtest(unittest.TestCase):
     n8 = node(8,'',[1,6],[])
     n9 = node(9,'',[6],[])
     g2 = open_digraph([0,2],[7],[n0,n1,n2,n3,n4,n5,n6,n7,n8,n9])
-
+    """
     '''
     #graph simple:
     n0 = node(0,'i', [1], [1])
     n1 = node(1, 'j', [0], [0])
     g = open_digraph([], [], [n0, n1])
     '''
+
+    g2 = random_bool_circ(8)
+
     node_pos = {}
     node_pos[1] = point(100, 100)
     node_pos[2] = point(200, 200)

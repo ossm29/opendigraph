@@ -144,9 +144,13 @@ def random_bool_circ(n):
 
     if(node.indegree() == 1 and node.outdegree() > 1):
       g.nodes[node.get_id()].label = ""
-    
   print(g)
-  return bool_circ(g)
+  res = bool_circ(g)
+  
+  for i in range(len(res.get_input_ids())):
+    res.nodes[res.get_input_ids()[i]].label = 'x' + str(i)
+  print(res)
+  return res
 
 
 

@@ -184,7 +184,12 @@ class open_digraph: # for open directed graph
     liste.sort()
     if (liste[len(liste)-1] == len(liste)-1):
       return len(liste)
-    return next(x for x, y in enumerate(liste, 1) if x != y)
+    tmp = 0
+    for i in liste:
+      if i == tmp:
+        tmp += 1
+      else:
+        return tmp
 
   def add_edge(self, src, tgt): #ajoute une arête du noeud d’id src au noeud d’id tgt /!\ ERREUR ENONCÉ
     self.get_node_by_id(src).add_child_id(tgt) #bisect.insort(self.get_node_by_id(src).children,get_id(tgt)) #self.get_node_by_id(src).add_child_id(tgt)
