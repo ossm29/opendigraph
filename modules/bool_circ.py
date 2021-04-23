@@ -34,19 +34,23 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
   def is_well_formed(self): #test si un circuit booléen est bien formé
     tmp = self.copy()
     for node in tmp.get_nodes():
-      if((node.label == "&" or node.label == "|") and (node.outdegree() != 1)):#noeud est un OU ou un ET
+      indegree = node.indegree()
+      outdegree = node.outdegree()
+      if node.get_id() in self.get_output_ids():
+        outdegree += 1
+      if((node.label == "&" or node.label == "|") and (outdegree != 1)):#noeud est un OU ou un ET
         print(node.id)
         print("code d'erreur a")
         return False
-      if((node.label == "∼") and (node.indegree() != 1 or node.outdegree() != 1)):#noeud est un not   
+      if((node.label == "∼") and (indegree != 1 or outdegree != 1)):#noeud est un not   
         print(node.id)
         print("code d'erreur b")
         return False
-      if(node.label == "" and node.indegree() != 1 ): #noeud est une copie
+      if(node.label == "" and indegree != 1 ): #noeud est une copie
         print(node.id)
         print("code d'erreur c")
         #return False
-      if((node.label == "1" or node.label == "0") and (node.indegree() != 0 or node.outdegree() != 1)): #noeud est une constante    
+      if((node.label == "1" or node.label == "0") and (indegree != 0 or outdegree != 1)): #noeud est une constante    
         print(node.id)
         print("code d'erreur d")
         return False   
@@ -125,9 +129,13 @@ def random_bool_circ(n, nbInputs = None, nbOutputs = None):
 
   #step 3
   for node in g.get_nodes():
-    if(node.indegree() == node.outdegree() and node.indegree() == 1):
+    indegree = node.indegree()
+    outdegree = node.outdegree()
+    if node.get_id() in g.get_output_ids():
+      outdegree += 1
+    if(indegree == outdegree and indegree == 1):
       g.nodes[node.get_id()].label = "~"
-    if(node.indegree() > 1 and node.outdegree() == 1):
+    if(indegree > 1 and outdegree == 1):
       tmp = random.randint(0,2)
       if (tmp == 1):
         g.nodes[node.get_id()].label = "&" 
@@ -135,7 +143,7 @@ def random_bool_circ(n, nbInputs = None, nbOutputs = None):
         g.nodes[node.get_id()].label ="|"
       #g.nodes[node.get_id()].label = "&" if tmp == 1 else "|"
 
-    if(node.indegree() > 1 and node.outdegree() > 1):
+    if(indegree > 1 and outdegree > 1):
       tmp = random.randint(0,2)
       if (tmp == 1):
         local = "&" 
@@ -159,8 +167,7 @@ def random_bool_circ(n, nbInputs = None, nbOutputs = None):
   res = bool_circ(g)
   for i in range(len(res.get_input_ids())):
     res.nodes[res.get_input_ids()[i]].label = 'input ' + str(i)
-  for i in range(len(res.get_output_ids())):
-    res.nodes[res.get_output_ids()[i]].label = 'output ' + str(i)
+  print(res)
   return res
 
 

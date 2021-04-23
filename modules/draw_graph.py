@@ -196,9 +196,9 @@ def DAG_layout(g): #renvoie des positions pour les noeuds, les entrées et les s
       node_pos[l[i][j]] = point(j*WIDTH/len(l[i])+WIDTH/(2*len(l[i])),i*HEIGHT/len(l)+HEIGHT/(2*len(l)))
 
   for element in g.get_input_ids():
-    input_pos.append(node_pos[element])
+    input_pos.append(node_pos[element] + point(0, -POINTEUR))
   for element in g.get_output_ids():
-    output_pos.append(node_pos[element])
+    output_pos.append(node_pos[element]+ point(0, POINTEUR))
 
   return node_pos,input_pos,output_pos
 

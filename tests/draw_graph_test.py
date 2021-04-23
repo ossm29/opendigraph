@@ -64,6 +64,7 @@ class pointtest(unittest.TestCase):
     node_pos[1] = point(100, 100)
     node_pos[2] = point(200, 200)
     draw.graph(g2, node_pos, [], [],'topologique')
+    
     """
     p1 = point(50, 50)
     p2 = point(50, 100)
