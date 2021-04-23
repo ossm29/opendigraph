@@ -58,7 +58,7 @@ class pointtest(unittest.TestCase):
     g = open_digraph([], [], [n0, n1])
     '''
 
-    g2 = random_bool_circ(5)
+    g2 = random_bool_circ(5, 3, 4)
 
     node_pos = {}
     node_pos[1] = point(100, 100)

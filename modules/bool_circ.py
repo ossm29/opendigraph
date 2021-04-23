@@ -109,25 +109,60 @@ def parse_parentheses(*s, fusion_flag=True):
   return res
         
 def random_bool_circ(n, nbInputs = None, nbOutputs = None):
-  #step 1
+  #step 1 : création du graph
   g = random_graph(n,1,form="DAG")
-  #step 2
+  
+  #step 2 : création des inputs/outputs
   for node in g.get_nodes():
     if( node.parents == []):
       g.inputs.append(node.get_id())
     if(node.children == []):
       g.outputs.append(node.get_id())
-  '''
-  #step 2.5
+  
+  #step 2.5 : affinage des inputs/outputs
   allNodes = [g.nodes[i] for i in g.get_node_ids()]
+  #inputs:
   if nbInputs != None:
     n = len(g.get_input_ids())
     if n < nbInputs:
       for i in range(nbInputs - n):
-        nodeLocal = random.choice
-  '''
+        nodeLocal = random.choice(allNodes)
+        while(nodeLocal.get_id() in g.get_input_ids()):
+          nodeLocal = random.choice(allNodes)
+        new_id = g.add_node("value", [], [nodeLocal.get_id()])
+        g.add_input_id(new_id)
+    elif n > nbInputs:
+      for i in range(n-nbInputs):
+        idInput1 = random.choice(g.get_input_ids())
+        idInput2 = random.choice(g.get_input_ids())
+        while(idInput1 == idInput2):
+          idInput2 = random.choice(g.get_input_ids())
+        new_id = g.add_node("value", [], [idInput1, idInput2])
+        g.inputs.remove(idInput1)
+        g.inputs.remove(idInput2)
+        g.add_input_id(new_id)
+  #outputs:
+  if nbOutputs != None:
+    n = len(g.get_output_ids())
+    if n < nbOutputs:
+      for i in range(nbOutputs - n):
+        nodeLocal = random.choice(allNodes)
+        while(nodeLocal.get_id() in g.get_output_ids()):
+          nodeLocal = random.choice(allNodes)
+        new_id = g.add_node("value", [nodeLocal.get_id()], [])
+        g.add_output_id(new_id)
+    elif n > nbOutputs:
+      for i in range(n-nbOutputs):
+        idOutput1 = random.choice(g.get_output_ids())
+        idOutput2 = random.choice(g.output())
+        while(idOutput1 == idOutput2):
+          idOutput2 = random.choice(g.get_output_ids())
+        new_id = g.add_node("value", [idOutput1, idOutput2], [])
+        g.outputs.remove(idOutput1)
+        g.outputs.remove(idOutput2)
+        g.add_output_id(new_id)
 
-  #step 3
+  #step 3 : renommage des noeuds
   for node in g.get_nodes():
     indegree = node.indegree()
     outdegree = node.outdegree()
@@ -167,7 +202,7 @@ def random_bool_circ(n, nbInputs = None, nbOutputs = None):
   res = bool_circ(g)
   for i in range(len(res.get_input_ids())):
     res.nodes[res.get_input_ids()[i]].label = 'input ' + str(i)
-  print(res)
+  #print(res)
   return res
 
 
