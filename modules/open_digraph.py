@@ -181,6 +181,8 @@ class open_digraph: # for open directed graph
   #/////////////////////
   def new_id(self): #renvoie un id non utilisé dans le graphe.(choisit le + petit)
     liste = self.get_node_ids()
+    if(len(liste)==0):
+      return 0
     liste.sort()
     if (liste[len(liste)-1] == len(liste)-1):
       return len(liste)

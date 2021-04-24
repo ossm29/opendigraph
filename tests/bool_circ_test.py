@@ -23,9 +23,8 @@ class boolTest(unittest.TestCase):
     b1 = node(1,"",[6],[0,2])
     b2 = node(2,"|",[1, 7],[3])
     b3 = node(3,"∼",[2],[4])
-    b4 = node(4,"|",[0,3],[8])
-    s1 = node(8, "sortie", [4], [])
-    c = bool_circ(open_digraph([5,6,7], [4], [b0,b1,b2,b3,b4,c1,c2,c3,s1]))
+    b4 = node(4,"|",[0,3],[])
+    c = bool_circ(open_digraph([5,6,7], [4], [b0,b1,b2,b3,b4,c1,c2,c3]))
     self.assertEqual(c, c)
 
   def test_generation(self):

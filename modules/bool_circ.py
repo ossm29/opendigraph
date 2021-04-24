@@ -38,7 +38,7 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
       outdegree = node.outdegree()
       if node.get_id() in self.get_output_ids():
         outdegree += 1
-      if((node.label == "&" or node.label == "|") and (outdegree != 1)):#noeud est un OU ou un ET
+      if((node.label == "&" or node.label == "|" or node.label == "^") and (outdegree != 1)):#noeud est un OU ou un ET
         print(node.id)
         print("code d'erreur a")
         return False
@@ -107,7 +107,7 @@ def parse_parentheses(*s, fusion_flag=True):
   #renvoie
   #print(res.starters)
   return res
-        
+
 def random_bool_circ(n, nbInputs = None, nbOutputs = None):
   #step 1 : création du graph
   g = random_graph(n,1,form="DAG")
@@ -171,19 +171,23 @@ def random_bool_circ(n, nbInputs = None, nbOutputs = None):
     if(indegree == outdegree and indegree == 1):
       g.nodes[node.get_id()].label = "~"
     if(indegree > 1 and outdegree == 1):
-      tmp = random.randint(0,2)
+      tmp = random.randint(0,3)
       if (tmp == 1):
         g.nodes[node.get_id()].label = "&" 
-      else :
+      elif (tmp == 2) :
         g.nodes[node.get_id()].label ="|"
       #g.nodes[node.get_id()].label = "&" if tmp == 1 else "|"
+      else:
+        g.nodes[node.get_id()].label = "^"
 
     if(indegree > 1 and outdegree > 1):
-      tmp = random.randint(0,2)
+      tmp = random.randint(0,3)
       if (tmp == 1):
         local = "&" 
-      else :
+      elif (tmp == 2) :
         local = "|"
+      else:
+        g.nodes[node.get_id()].label = "^"
       
       id1 = g.add_node(local,node.get_parents_ids(),[])
       id2 = g.add_node("",[],node.get_children_ids())
@@ -205,13 +209,20 @@ def random_bool_circ(n, nbInputs = None, nbOutputs = None):
   #print(res)
   return res
 
+def int_to_bool_circ(n,size = 8):
+  b = bool_circ(open_digraph([],[],[]))
+  binaire = bin(n)[2:]
+  for i in range(size-len(binaire)):
+    tmp = b.add_node("0",[],[])
+    b.add_output_id(tmp)
 
+  for element in binaire:
+    tmp = b.add_node(element,[],[])
+    b.add_output_id(tmp)
 
+  return b
 
-
-
-
-
+      
 
 
 
