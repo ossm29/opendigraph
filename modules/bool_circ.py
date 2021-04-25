@@ -166,7 +166,7 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
     assert(self.is_well_formed())
     return return_nodes
 
-  def apply_neutral_rule(self, neutral_node_id):
+  def apply_neutral_rule(self, neutral_node_id):#éléments neutres
     data = self.get_node_by_id(neutral_node_id).get_label()
     assert data in ['|', '^', '&'], "wrong data label"
     children = self.get_node_by_id(neutral_node_id).get_children_ids()
