@@ -43,7 +43,13 @@ class boolTest(unittest.TestCase):
     node_res = b.apply_copy_rule(0, 1)
     self.assertEqual(node_res, [3, 4])
     self.assertEqual(b, bool_circ(open_digraph([], [3, 2], [node(2, '~', [4], []), node(3, '1', [], []), node(4, '1', [], [2])])))
-    
+    b.apply_not_rule(4, 2)
+    self.assertEqual(b, bool_circ(open_digraph([], [3,2], [node(2, '0', [], []), node(3, '1', [], [])])))
+
+
+
+
+
 if __name__ == '__main__':  # the following code is called only when
   unittest.main()           # precisely this file is run.
   
