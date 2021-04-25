@@ -58,6 +58,39 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
       print("Y")
     return (not tmp.is_cyclic())
 
+  def apply_copy_rule(self, data_node_id, cp_node_id):
+    '''
+    data_node_id, cp_node_id : int; the ids of the nodes on which to apply the rule
+    Applies the "data copy" rule of boolean circuits on the given nodes.
+    output : int list; the list of nodes that were created
+    '''
+    
+    data = self.get_node_by_id(data_node_id).get_label()
+    assert data in ['0','1'], "wrong data label"
+    assert cp_node_id in self.get_node_by_id(data_node_id).get_children_ids(), \
+    "the two nodes are not connected"
+    return_nodes=[]
+   
+    # case where the copy node is also an output
+    for ind in range(len(self.outputs)):
+      if self.outputs[ind] == cp_node_id:
+        new_id = self.add_node(data, [],[])
+        self.outputs[ind] = new_id
+        return_nodes.append(new_id)
+    
+    # general case
+    children = self.get_node_by_id(cp_node_id).get_children_ids()
+    for child in children:
+      new_id = self.add_node(data, [],[child])
+      return_nodes.append(new_id)
+    
+    self.remove_node_by_ids([data_node_id, cp_node_id])
+    
+    assert(self.is_well_formed())
+    return return_nodes
+
+#end of the class
+
 def parse_parentheses(*s, fusion_flag=True):
   graphs = []
   for prop in s:
@@ -187,7 +220,7 @@ def random_bool_circ(n, nbInputs = None, nbOutputs = None):
       elif (tmp == 2) :
         local = "|"
       else:
-        g.nodes[node.get_id()].label = "^"
+        local = "^"
       
       id1 = g.add_node(local,node.get_parents_ids(),[])
       id2 = g.add_node("",[],node.get_children_ids())

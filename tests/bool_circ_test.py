@@ -35,6 +35,15 @@ class boolTest(unittest.TestCase):
     h = random_bool_circ(8)
     #print(h)
 
+  def test_rule(self):
+    n0 = node(0, '1', [], [1]) #input
+    n1 = node(1, '', [0], [2]) #output
+    n2 = node(2, '~', [1], []) #output
+    b = bool_circ(open_digraph([0], [1,2], [n0,n1,n2]))
+    node_res = b.apply_copy_rule(0, 1)
+    self.assertEqual(node_res, [3, 4])
+    self.assertEqual(b, bool_circ(open_digraph([], [3, 2], [node(2, '~', [4], []), node(3, '1', [], []), node(4, '1', [], [2])])))
+    
 if __name__ == '__main__':  # the following code is called only when
   unittest.main()           # precisely this file is run.
   

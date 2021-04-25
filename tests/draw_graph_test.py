@@ -59,7 +59,7 @@ class pointtest(unittest.TestCase):
     '''
 
     #g2 = random_bool_circ(5, 3, 4)
-    g2 = int_to_bool_circ(19)
+    g2 = int_to_bool_circ(300)
     node_pos = {}
     node_pos[1] = point(100, 100)
     node_pos[2] = point(200, 200)
