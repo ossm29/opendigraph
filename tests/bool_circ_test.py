@@ -59,6 +59,19 @@ class boolTest(unittest.TestCase):
     b2.apply_and_rule(2, 4)
     self.assertEqual(b2, bool_circ(open_digraph([], [4], [node(3, '1', [], [0]), node(4, '0', [], []), node(0,'', [3], [])])))
     
+    m0 = node(0, '0', [], [4]) 
+    m1 = node(1, '0', [], [4]) 
+    m2 = node(2, '1', [], [4]) 
+    m3 = node(3, '0', [], [4]) 
+    m4 = node(4, '|', [0,1,2,3], []) #output
+    b2 = bool_circ(open_digraph([], [4], [m0,m1,m2,m3,m4]))
+    b2.apply_or_rule(0,4)
+    self.assertEqual(b2, bool_circ(open_digraph([], [4], [node(1, '0', [], [4]), node(2, '1', [], [4]), node(3, '0', [], [4]), node(4, '|', [1, 2, 3], [])])))
+    b2.apply_or_rule(1, 4)
+    self.assertEqual(b2, bool_circ(open_digraph([], [4], [node(2, '1', [], [4]), node(3, '0', [], [4]), node(4, '|', [2, 3], [])])))
+    b2.apply_or_rule(2, 4)
+    self.assertEqual(b2, bool_circ(open_digraph([], [4], [node(3, '0', [], [0]), node(4, '1', [], []), node(0,'', [3], [])])))
+    
 
 
 
