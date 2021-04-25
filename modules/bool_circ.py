@@ -145,6 +145,40 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
       self.nodes[or_node_id].label = "1"
     else:
       self.remove_node_by_id(data_node_id)
+  
+  def apply_xor_rule(self, data_node_id, or_node_id):
+    data = self.get_node_by_id(data_node_id).get_label()
+    assert data in ['0', '1'], "wrong data label"
+    if (data == "0"):
+      return [xor_node_id]
+    return_nodes = []
+    # case where the copy node is also an output
+    for id in range(len(self.get_output_ids())):
+      if self.get_output_ids()[id] == xor_node_id:
+        new_id = self.add_node(data, [], [])
+        self.outputs[id] = new_id
+        return_nodes.append(new_id)
+    # general case
+    new_id = self.add_node('~', [xor_node_id], [])
+    return_nodes.append(new_id)
+    return_nodes.append(xor_node_id)
+    self.remove_node_by_id(data_node_id)
+    assert(self.is_well_formed())
+    return return_nodes
+
+  def apply_neutral_rule(self, neutral_node_id):
+    data = self.get_node_by_id(neutral_node_id).get_label()
+    assert data in ['|', '^', '&'], "wrong data label"
+    children = self.get_node_by_id(neutral_node_id).get_children_ids()
+    if (data == "|" or data == "^"):
+      new_id = self.add_node("0", [], children)
+      self.remove_node_by_id(neutral_node_id)
+      return [new_id]
+    elif (data == "&"):
+      new_id = self.add_node("1", [], children)
+      self.remove_node_by_id(neutral_node_id)
+      return [new_id]
+
     
 
 #end of the class
