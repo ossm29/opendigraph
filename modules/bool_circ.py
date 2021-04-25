@@ -92,19 +92,39 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
   def apply_not_rule(self, data_node_id, n_node_id):
     """
     data_node_id, n_node_id : int; the ids of the nodes on which to apply the rule
-    Applies the "not copy" rule of boolean circuits on the given nodes.
+    Applies the "not" rule of boolean circuits on the given nodes.
     output : /
     """
     data = self.get_node_by_id(data_node_id).get_label()
     assert data in ['0','1'], "wrong data label"
     assert n_node_id in self.get_node_by_id(data_node_id).get_children_ids(), \
     "the two nodes are not connected"
-    return_nodes=[]
     if data == '1':
       self.nodes[n_node_id].label = '0'
     else:
       self.nodes[n_node_id].label = '1'
     self.remove_node_by_id(data_node_id)
+
+  def apply_and_rule(self, data_node_id, and_node_id):
+    """
+    data_node_id, and_node_id : int; the ids of the nodes on which to apply the rule
+    Applies the "and" rule of boolean circuits on the given nodes.
+    output : /
+    """
+    data = self.get_node_by_id(data_node_id).get_label()
+    assert data in ['0','1'], "wrong data label"
+    assert and_node_id in self.get_node_by_id(data_node_id).get_children_ids(), \
+    "the two nodes are not connected"
+    if data == "0":
+      self.remove_node_by_id(data_node_id)
+      for node_id in self.get_node_by_id(and_node_id).get_parents_ids():
+        self.remove_edge(node_id, and_node_id)
+        self.add_node("", [node_id], [])
+      self.nodes[and_node_id].label = "0"
+    else:
+      self.remove_node_by_id(data_node_id)
+        
+
     
 
 #end of the class

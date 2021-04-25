@@ -59,7 +59,18 @@ class pointtest(unittest.TestCase):
     '''
 
     #g2 = random_bool_circ(5, 3, 4)
-    g2 = int_to_bool_circ(300)
+    #g2 = int_to_bool_circ(300)
+
+    m0 = node(0, '1', [], [4]) 
+    m1 = node(1, '1', [], [4]) 
+    m2 = node(2, '0', [], [4]) 
+    m3 = node(3, '1', [], [4]) 
+    m4 = node(4, '&', [0,1,2,3], []) #output
+    g2 = bool_circ(open_digraph([], [4], [m0,m1,m2,m3,m4]))
+    g2.apply_and_rule(0,4)
+    g2.apply_and_rule(1, 4)
+    g2.apply_and_rule(2, 4)
+
     node_pos = {}
     node_pos[1] = point(100, 100)
     node_pos[2] = point(200, 200)
@@ -88,7 +99,7 @@ class pointtest(unittest.TestCase):
     draw.bezier(point(50, 50), point(75,75), point(50, 100))
     """
     
-    image.save("test2.jpg")
+    image.save("boolean_circuit_printer.jpg")
 
     #g3 = random_bool_circ(7)
 
