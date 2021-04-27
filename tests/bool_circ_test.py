@@ -86,6 +86,14 @@ class boolTest(unittest.TestCase):
     b3.apply_xor_rule(2, 5)
     self.assertEqual(b3, bool_circ(open_digraph([], [0], [node(3, "1", [], [5]), node(4, "1", [], [5]), node(5, "^", [3, 4], [1]), node(0, "~", [1], []), node(1, "~", [5], [0])])))
     
+    p0 = node(0, '|', [], [2])
+    p1 = node(1, '&', [], [2])
+    p2 = node(2, '|', [0,1], []) #output
+    b4 = bool_circ(open_digraph([], [2], [p0,p1,p2]))
+    b4.apply_neutral_rule(0)
+    self.assertEqual(b4, bool_circ(open_digraph([], [2], [node(0, '0', [], [2]), node(1, '&', [], [2]), node(2, '|', [0,1], [])])))
+    b4.apply_neutral_rule(1)
+    self.assertEqual(b4, bool_circ(open_digraph([], [2], [node(0, '0', [], [2]), node(1, '1', [], [2]), node(2, '|', [0,1], [])])))
 if __name__ == '__main__':  # the following code is called only when
   unittest.main()           # precisely this file is run.
   

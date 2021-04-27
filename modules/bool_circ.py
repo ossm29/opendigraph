@@ -169,20 +169,18 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
 
     assert(self.is_well_formed())
     return return_nodes
-"""
+
   def apply_neutral_rule(self, neutral_node_id):#éléments neutres
     data = self.get_node_by_id(neutral_node_id).get_label()
     assert data in ['|', '^', '&'], "wrong data label"
+    assert (self.get_node_by_id(neutral_node_id).get_parents_ids() == [] and not neutral_node_id in self.get_input_ids()), "non neutral gate"
     children = self.get_node_by_id(neutral_node_id).get_children_ids()
     if (data == "|" or data == "^"):
-      new_id = self.add_node("0", [], children)
-      self.remove_node_by_id(neutral_node_id)
-      return [new_id]
+      self.nodes[neutral_node_id].label = "0"
     elif (data == "&"):
-      new_id = self.add_node("1", [], children)
-      self.remove_node_by_id(neutral_node_id)
-      return [new_id]
-"""
+      self.nodes[neutral_node_id].label = "1"
+      
+
     
 
 #end of the class
