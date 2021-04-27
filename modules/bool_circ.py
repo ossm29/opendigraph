@@ -146,26 +146,30 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
     else:
       self.remove_node_by_id(data_node_id)
   
-  def apply_xor_rule(self, data_node_id, or_node_id):
+  def apply_xor_rule(self, data_node_id, xor_node_id):
     data = self.get_node_by_id(data_node_id).get_label()
     assert data in ['0', '1'], "wrong data label"
-    if (data == "0"):
-      return [xor_node_id]
-    return_nodes = []
-    # case where the copy node is also an output
-    for id in range(len(self.get_output_ids())):
-      if self.get_output_ids()[id] == xor_node_id:
-        new_id = self.add_node(data, [], [])
-        self.outputs[id] = new_id
-        return_nodes.append(new_id)
-    # general case
-    new_id = self.add_node('~', [xor_node_id], [])
-    return_nodes.append(new_id)
-    return_nodes.append(xor_node_id)
+    assert self.get_node_by_id(xor_node_id).get_label() == '^', 'wrong gate'
+    assert xor_node_id in self.get_node_by_id(data_node_id).get_children_ids(), \
+    "the two nodes are not connected"
     self.remove_node_by_id(data_node_id)
+    return_nodes = []
+    if (data == "1"):
+      if xor_node_id in self.get_output_ids(): #case where xor gate is an output
+        self.outputs.remove(xor_node_id)
+        new_id = self.add_node("~", [xor_node_id], [])
+        self.add_output_id(new_id)
+      else: #case were xor gate isn't an output
+        children = self.get_node_by_id(xor_node_id).get_children_ids()
+        self.nodes[xor_node_id].children = []
+        for id in children:
+          self.nodes[id].parents = []
+        new_id = self.add_node("~", [xor_node_id], children)
+        return_nodes = [new_id]
+
     assert(self.is_well_formed())
     return return_nodes
-
+"""
   def apply_neutral_rule(self, neutral_node_id):#éléments neutres
     data = self.get_node_by_id(neutral_node_id).get_label()
     assert data in ['|', '^', '&'], "wrong data label"
@@ -178,7 +182,7 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
       new_id = self.add_node("1", [], children)
       self.remove_node_by_id(neutral_node_id)
       return [new_id]
-
+"""
     
 
 #end of the class

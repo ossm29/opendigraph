@@ -72,9 +72,20 @@ class boolTest(unittest.TestCase):
     b2.apply_or_rule(2, 4)
     self.assertEqual(b2, bool_circ(open_digraph([], [4], [node(3, '0', [], [0]), node(4, '1', [], []), node(0,'', [3], [])])))
     
-
-
-
+    o0 = node(0, '0', [], [5])
+    o1 = node(1, '1', [], [5])
+    o2 = node(2, '1', [], [5])
+    o3 = node(3, '1', [], [5])
+    o4 = node(4, '1', [], [5])
+    o5 = node(5, '^', [0,1,2,3,4], []) #output
+    b3 = bool_circ(open_digraph([], [5], [o0,o1,o2,o3,o4,o5]))
+    b3.apply_xor_rule(0, 5)
+    self.assertEqual(b3, bool_circ(open_digraph([], [5], [node(1, "1", [], [5]), node(2, "1", [], [5]), node(3, "1", [], [5]), node(4, "1", [], [5]), node(5, "^", [1, 2, 3, 4], [])])))
+    b3.apply_xor_rule(1, 5)
+    self.assertEqual(b3, bool_circ(open_digraph([], [0], [node(2, "1", [], [5]), node(3, "1", [], [5]), node(4, "1", [], [5]), node(5, "^", [2, 3, 4], [0]), node(0, '~', [5], [])])))   
+    b3.apply_xor_rule(2, 5)
+    self.assertEqual(b3, bool_circ(open_digraph([], [0], [node(3, "1", [], [5]), node(4, "1", [], [5]), node(5, "^", [3, 4], [1]), node(0, "~", [1], []), node(1, "~", [5], [0])])))
+    
 if __name__ == '__main__':  # the following code is called only when
   unittest.main()           # precisely this file is run.
   
