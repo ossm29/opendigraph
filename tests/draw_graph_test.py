@@ -67,9 +67,8 @@ class pointtest(unittest.TestCase):
     m3 = node(3, '1', [], [4]) 
     m4 = node(4, '&', [0,1,2,3], []) #output
     g2 = bool_circ(open_digraph([], [4], [m0,m1,m2,m3,m4]))
-    g2.apply_and_rule(0,4)
-    g2.apply_and_rule(1, 4)
-    g2.apply_and_rule(2, 4)
+    g2.reduce_eval()
+
 
     node_pos = {}
     node_pos[1] = point(100, 100)

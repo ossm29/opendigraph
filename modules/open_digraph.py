@@ -211,8 +211,8 @@ class open_digraph: # for open directed graph
     return newid
 
   def remove_edge(self, src, tgt): #supprime une arête du noeud src au noeud tgt
-    self.get_node_by_id(src).remove_child_id(tgt)
-    self.get_node_by_id(tgt).remove_parent_id(src)
+    self.nodes[src].children.remove(tgt)
+    self.nodes[tgt].parents.remove(src)
   
   def remove_node_by_id(self, id):#*
     x = self.nodes.pop(id)

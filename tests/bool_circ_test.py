@@ -94,6 +94,23 @@ class boolTest(unittest.TestCase):
     self.assertEqual(b4, bool_circ(open_digraph([], [2], [node(0, '0', [], [2]), node(1, '&', [], [2]), node(2, '|', [0,1], [])])))
     b4.apply_neutral_rule(1)
     self.assertEqual(b4, bool_circ(open_digraph([], [2], [node(0, '0', [], [2]), node(1, '1', [], [2]), node(2, '|', [0,1], [])])))
+
+  def test_calc(self):
+    n0 = node(0, '0', [], [])
+    n1 = node(1, '1', [], [])
+    b = bool_circ(open_digraph([], [0, 1], [n0, n1]))
+    btest = b.copy_bool_circ()
+    btest.calc_simple_boolean_circ(0)
+    btest.calc_simple_boolean_circ(1)
+    self.assertEqual(btest, bool_circ(open_digraph([], [0, 1], [node(0, '0', [], []), node(1, '1', [], [])])))
+    n0 = node(0, "0", [], [2])
+    n1 = node(1, "1", [], [2])
+    n2 = node(2, "&", [0,1], [])
+    b = bool_circ(open_digraph([], [2], [n0, n1, n2]))
+    btest = b.copy_bool_circ()
+    btest.calc_simple_boolean_circ(2)
+    self.assertEqual(btest, bool_circ(open_digraph([], [2], [node(0, "0", [], [3]), node(1, "1", [], [4]), node(2, "0", [], []), node(3,"", [0], []), node(4, "", [1], [])])))
+
 if __name__ == '__main__':  # the following code is called only when
   unittest.main()           # precisely this file is run.
   
