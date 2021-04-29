@@ -151,7 +151,7 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
   
   def apply_xor_rule(self, data_node_id, xor_node_id):
     data = self.get_node_by_id(data_node_id).get_label()
-    assert data in ['0', '1'], "wrong data label"
+    assert data in ['0', '1'], str(self.get_node_by_id(data_node_id)) + " wrong data label"
     assert self.get_node_by_id(xor_node_id).get_label() == '^', 'wrong gate'
     assert xor_node_id in self.get_node_by_id(data_node_id).get_children_ids(), \
     "the two nodes are not connected"
@@ -211,8 +211,14 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
   def calc_node_value(self, start_node_id):
     for parent in self.get_node_by_id(start_node_id).get_parents_ids():
       self.calc_node_value(parent)
-    while(self.get_node_by_id(start_node_id).get_label() not in ["0", "1"]):
-      self.apply_rules(start_node_id)
+    if(self.get_node_by_id(start_node_id).get_label() == ""):
+      self.apply_copy_rule(self.get_node_by_id(start_node_id).get_parents_ids()[0], start_node_id)
+    else:
+      while(self.get_node_by_id(start_node_id).get_label() not in ["0", "1"]):
+        self.apply_rules(start_node_id)
+  def reduce_eval(self):
+    for output in self.get_output_ids():
+      self.calc_node_value(output)
 
 #end of the class
 

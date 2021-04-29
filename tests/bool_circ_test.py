@@ -138,8 +138,65 @@ class boolTest(unittest.TestCase):
     b.calc_node_value(2) 
     self.assertEqual(b, bool_circ(open_digraph([], [0], [node(2, "0", [], [1]), node(0, "~", [1], []), node(1, "~", [2], [0])])))
     
+    b.calc_node_value(0)
+    self.assertEqual(b, bool_circ(open_digraph([], [0], [node(0, '0', [], [])])))
     
-    
+    n0 = node(0, '0', [], [1])
+    n1 = node(1, '', [0], [2, 3])
+    n2 = node(2, "~", [1], [])
+    n3 = node(3, "~", [1], [])
+    b = bool_circ(open_digraph([], [2,3], [n0,n1,n2,n3]))
+    b.calc_node_value(2)
+    b.calc_node_value(3)
+    self.assertEqual(b, bool_circ(open_digraph([], [2,3], [node(2, "1", [], []), node(3, "1", [], [])])))
+
+    n0 = node(0, '1', [], [2])
+    n1 = node(1, '0', [], [3])
+    n2 = node(2, '', [0], [3, 5])
+    n3 = node(3, '&', [1,2], [4])
+    n4 = node(4, '', [3], [5])
+    n5 = node(5, '^', [2, 4], [])
+    b = bool_circ(open_digraph([], [4,5], [n0,n1,n2,n3,n4,n5]))
+    b.calc_node_value(5)
+    print(b)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    m1 = node(1, '1', [], [7])
+    m2 = node(2, '0', [], [11])
+    m3 = node(3, '0', [], [8])
+    m4 = node(4, '1', [], [12])
+    m5 = node(5, '1', [], [9])
+    m6 = node(6, '0', [], [10])
+    m7 = node(7, '', [1], [11, 14])
+    m8 = node(8, '', [3], [12,17])
+    m9 = node(9, '', [5], [12,13,17])
+    m10 = node(10, '~', [6], [13])
+    m11 = node(11, '&', [2, 7], [15])
+    m12 = node(12, '|', [4,8,9], [])
+    m13 = node(13, '^', [9,10], [16])
+    m14 = node(14, '^', [7, 15], [])
+    m15 = node(15, '', [11], [14])
+    m16 = node(16, '', [13], [17])
+    m17 = node(17, '|', [8,9,16], [])
+    b = bool_circ(open_digraph([], [12, 14, 15, 16, 17], [m1,m2,m3,m4,m5,m6,m7,m8,m9,m10,m11,m12,m13,m14,m15,m16,m17]))
+    #b.calc_node_value(14)
+    #b.reduce_eval()
+    #print(b)
+
+
+
 if __name__ == '__main__':  # the following code is called only when
   unittest.main()           # precisely this file is run.
   
