@@ -61,19 +61,19 @@ class pointtest(unittest.TestCase):
     #g2 = random_bool_circ(5, 3, 4)
     #g2 = int_to_bool_circ(300)
 
-    m0 = node(0, '1', [], [4]) 
-    m1 = node(1, '1', [], [4]) 
-    m2 = node(2, '0', [], [4]) 
-    m3 = node(3, '1', [], [4]) 
-    m4 = node(4, '&', [0,1,2,3], []) #output
-    g2 = bool_circ(open_digraph([], [4], [m0,m1,m2,m3,m4]))
-    g2.reduce_eval()
+    n0 = node(0, '1', [], [2])
+    n1 = node(1, '0', [], [3])
+    n2 = node(2, '', [0], [3, 5])
+    n3 = node(3, '&', [1,2], [4])
+    n4 = node(4, '', [3], [5])
+    n5 = node(5, '^', [2, 4], [])
+    g2 = bool_circ(open_digraph([], [4,5], [n0,n1,n2,n3,n4,n5]))
 
 
     node_pos = {}
     node_pos[1] = point(100, 100)
     node_pos[2] = point(200, 200)
-    draw.graph(g2, node_pos, [], [],'topologique')
+    draw.graph(g2, node_pos, [], [],'circle')
     
     """
     p1 = point(50, 50)

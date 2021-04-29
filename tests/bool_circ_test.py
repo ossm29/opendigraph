@@ -150,6 +150,28 @@ class boolTest(unittest.TestCase):
     b.calc_node_value(3)
     self.assertEqual(b, bool_circ(open_digraph([], [2,3], [node(2, "1", [], []), node(3, "1", [], [])])))
 
+    n0 = node(0, '0', [], [1])
+    n1 = node(1, '', [0], [3])
+    n2 = node(2, '1', [], [3])
+    n3 = node(3, '&', [1,2], [])
+    b = bool_circ(open_digraph([], [1,3], [n0, n1, n2, n3]))
+    b.calc_node_value(3)
+    self.assertEqual(b, bool_circ(open_digraph([], [4,3], [node(3, '0', [], []), node(4, '0', [], [])])))
+
+
+    n0 = node(0, '1', [], [3])
+    n1 = node(1, '1', [], [3])
+    n2 = node(2, '1', [], [4])
+    n3 = node(3, '^', [1,2], [4])
+    n4 = node(4, '^', [2,3], [])
+    b = bool_circ(open_digraph([], [4], [n0,n1,n2,n3,n4]))
+    b.calc_node_value(4)
+    print(b)
+
+
+
+
+
     n0 = node(0, '1', [], [2])
     n1 = node(1, '0', [], [3])
     n2 = node(2, '', [0], [3, 5])
@@ -157,10 +179,11 @@ class boolTest(unittest.TestCase):
     n4 = node(4, '', [3], [5])
     n5 = node(5, '^', [2, 4], [])
     b = bool_circ(open_digraph([], [4,5], [n0,n1,n2,n3,n4,n5]))
+ 
     b.calc_node_value(5)
     print(b)
 
-
+    
 
 
 

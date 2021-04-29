@@ -150,28 +150,28 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
       self.remove_node_by_id(data_node_id)
   
   def apply_xor_rule(self, data_node_id, xor_node_id):
+    res = []
     data = self.get_node_by_id(data_node_id).get_label()
-    assert data in ['0', '1'], str(self.get_node_by_id(data_node_id)) + " wrong data label"
+    assert data in ['0', '1'], str(self) + " wrong data label"
     assert self.get_node_by_id(xor_node_id).get_label() == '^', 'wrong gate'
     assert xor_node_id in self.get_node_by_id(data_node_id).get_children_ids(), \
     "the two nodes are not connected"
     self.remove_node_by_id(data_node_id)
-    return_nodes = []
     if (data == "1"):
       if xor_node_id in self.get_output_ids(): #case where xor gate is an output
         self.outputs.remove(xor_node_id)
         new_id = self.add_node("~", [xor_node_id], [])
         self.add_output_id(new_id)
+        res.append(new_id)
       else: #case were xor gate isn't an output
         children = self.get_node_by_id(xor_node_id).get_children_ids()
         self.nodes[xor_node_id].children = []
         for id in children:
           self.nodes[id].parents = []
         new_id = self.add_node("~", [xor_node_id], children)
-        return_nodes = [new_id]
-
+        res.append(new_id)
     assert(self.is_well_formed())
-    return return_nodes
+    return res
 
   def apply_neutral_rule(self, neutral_node_id):#éléments neutres
     data = self.get_node_by_id(neutral_node_id).get_label()
@@ -184,8 +184,9 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
       self.nodes[neutral_node_id].label = "1"
       
   def apply_rules(self, rule_node_id):
-      label = self.get_node_by_id(rule_node_id).get_label()
-      parents = self.get_node_by_id(rule_node_id).get_parents_ids()
+    label = self.get_node_by_id(rule_node_id).get_label()
+    parents = self.get_node_by_id(rule_node_id).get_parents_ids()
+    if not label in ['0', '1']:
       if label == "&":
         if parents == []:
           self.apply_neutral_rule(rule_node_id)
@@ -200,7 +201,8 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
         if parents == []:
           self.apply_neutral_rule(rule_node_id)
         else:
-          self.apply_xor_rule(parents[0], rule_node_id)
+          new_nodes = self.apply_xor_rule(parents[0], rule_node_id)
+          print()
       elif label == "~":
         self.apply_not_rule(parents[0], rule_node_id)
       elif label == "":
@@ -209,13 +211,15 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
         assert True, "label doesn't exist"
 
   def calc_node_value(self, start_node_id):
-    for parent in self.get_node_by_id(start_node_id).get_parents_ids():
-      self.calc_node_value(parent)
+    parents = self.get_node_by_id(start_node_id).get_parents_ids().copy()
+    for parent in parents:  #tester sinon while non vide
+      self.calc_node_value(parent)   
     if(self.get_node_by_id(start_node_id).get_label() == ""):
       self.apply_copy_rule(self.get_node_by_id(start_node_id).get_parents_ids()[0], start_node_id)
     else:
       while(self.get_node_by_id(start_node_id).get_label() not in ["0", "1"]):
         self.apply_rules(start_node_id)
+        
   def reduce_eval(self):
     for output in self.get_output_ids():
       self.calc_node_value(output)
