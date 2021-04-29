@@ -183,80 +183,36 @@ class bool_circ(open_digraph): #class représentant les circuits booléens
     elif (data == "&"):
       self.nodes[neutral_node_id].label = "1"
       
-  def calc_simple_boolean_circ(self, start_node_id):
-    actual_node = self.get_node_by_id(start_node_id)
-    data = actual_node.get_label()
-    if not data in ["0", "1"]:
-        #recurtion
-      for parent in actual_node.get_parents_ids():
-        self.calc_simple_boolean_circ(parent)
-      if data == "&":
-        #reduction
-        while(len(self.nodes[start_node_id].parents) > 2): 
-          self.apply_and_rule(self.nodes[start_node_id].parents[0], start_node_id)
-        #calcul
-        if(self.get_node_by_id(start_node_id).get_parents_ids() == []):
-          self.apply_neutral_rule(start_node_id)
+  def apply_rules(self, rule_node_id):
+      label = self.get_node_by_id(rule_node_id).get_label()
+      parents = self.get_node_by_id(rule_node_id).get_parents_ids()
+      if label == "&":
+        if parents == []:
+          self.apply_neutral_rule(rule_node_id)
         else:
-          if(self.get_node_by_id(self.get_node_by_id(start_node_id).get_parents_ids()[0]).get_label() == "0" or self.get_node_by_id(self.get_node_by_id(start_node_id).get_parents_ids()[1]).get_label() == "0"):
-            self.nodes[start_node_id].label = "0"
-          else:
-            self.nodes[start_node_id].label = "1"
-          parents = self.get_node_by_id(start_node_id).get_parents_ids().copy()
-          for parent in parents:
-            self.remove_edge(parent, start_node_id)
-            self.add_node("", [parent], [])
-      elif data == "|":
-        #reduction
-        while(len(self.nodes[start_node_id].parents) > 2): 
-          self.apply_and_rule(self.nodes[start_node_id].parents[0], start_node_id)
-        #calcul
-        if(self.get_node_by_id(start_node_id).get_parents_ids() == []):
-          self.apply_neutral_rule(start_node_id)
+          self.apply_and_rule(parents[0], rule_node_id)
+      elif label == "|":
+        if parents == []:
+          self.apply_neutral_rule(rule_node_id)
         else:
-          if(self.get_node_by_id(self.get_node_by_id(start_node_id).get_parents_ids()[0]).get_label() == "0" and self.get_node_by_id(self.get_node_by_id(start_node_id).get_parents_ids()[1]).get_label() == "0"):
-            self.nodes[start_node_id].label = "0"
-          else:
-            self.nodes[start_node_id].label = "1"
-          parents = self.get_node_by_id(start_node_id).get_parents_ids().copy()
-          for parent in parents:
-            self.remove_edge(parent, start_node_id)
-            self.add_node("", [parent], [])
-      elif data == "^":
-        #reduction
-        while(len(self.nodes[start_node_id].parents) > 2): 
-          self.apply_and_rule(self.nodes[start_node_id].parents[0], start_node_id)
-        #calcul
-        if(self.get_node_by_id(start_node_id).get_parents_ids() == []):
-          self.apply_neutral_rule(start_node_id)
+          self.apply_or_rule(parents[0], rule_node_id)
+      elif label == "^":
+        if parents == []:
+          self.apply_neutral_rule(rule_node_id)
         else:
-          if(self.get_node_by_id(self.get_node_by_id(start_node_id).get_parents_ids()[0]).get_label() == "1" and self.get_node_by_id(self.get_node_by_id(start_node_id).get_parents_ids()[1]).get_label() == "1"):
-            self.nodes[start_node_id].label = "1"
-          if(self.get_node_by_id(self.get_node_by_id(start_node_id).get_parents_ids()[0]).get_label() == "0" and self.get_node_by_id(self.get_node_by_id(start_node_id).get_parents_ids()[1]).get_label() == "0"):
-            self.nodes[start_node_id].label = "1"
-          else:
-            self.nodes[start_node_id].label = "1"
-          parents = self.get_node_by_id(start_node_id).get_parents_ids().copy()
-          for parent in parents:
-            self.remove_edge(parent, start_node_id)
-            self.add_node("", [parent], [])
-      elif data == "~":
-        if self.get_node_by_id(start_node_id).get_label() == "1":
-          self.nodes[start_node_id].label = "0"
-        else:
-          self.nodes[start_node_id].label = "1"
-        parents = self.get_node_by_id(start_node_id).get_parents_ids().copy()
-        for parent in parents:
-          self.remove_edge(parent, start_node_id)
-          self.add_node("", [parent], [])
-      elif data == "":
-        self.apply_copy_rule(self.get_node_by_id(start_node_id).get_parents_ids()[0], start_node_id)
+          self.apply_xor_rule(parents[0], rule_node_id)
+      elif label == "~":
+        self.apply_not_rule(parents[0], rule_node_id)
+      elif label == "":
+        self.apply_copy_rule(parents[0], rule_node_id)
       else:
-        assert False, "this label doesn't exist"
+        assert True, "label doesn't exist"
 
-  def reduce_eval(self):
-    for node_id in self.get_output_ids():
-      self.calc_simple_boolean_circ(node_id)
+  def calc_node_value(self, start_node_id):
+    for parent in self.get_node_by_id(start_node_id).get_parents_ids():
+      self.calc_node_value(parent)
+    while(self.get_node_by_id(start_node_id).get_label() not in ["0", "1"]):
+      self.apply_rules(start_node_id)
 
 #end of the class
 
