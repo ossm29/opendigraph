@@ -8,10 +8,10 @@ import bisect  #module pour insérer element dans liste triée
 from modules.utils import *
 
 from modules.mixins.open_digraph_tools_mx import *
-from modules.mixins.open_digraph_getters_setters_mx import *
-from modules.mixins.open_digraph_advanced_mx import *
-from modules.mixins.open_digraph_degree_mx import *
-from modules.mixins.open_digraph_composition_mx import *
+from modules.open_digraph_getters_setters_mx import *
+from modules.open_digraph_advanced_mx import *
+from modules.open_digraph_degree_mx import *
+from modules.open_digraph_composition_mx import *
 
 
 class node():
