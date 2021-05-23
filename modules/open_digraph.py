@@ -1,9 +1,20 @@
 #Oussama Konate, Thomas Delépine, groupe 8
+import operator
+
+import sys
+sys.path.append('../')
 import random
 import bisect  #module pour insérer element dans liste triée
 from modules.utils import *
 
-class node:
+from modules.open_digraph_tools_mx import *
+from modules.open_digraph_getters_setters_mx import *
+from modules.open_digraph_advanced_mx import *
+from modules.open_digraph_degree_mx import *
+from modules.open_digraph_composition_mx import *
+
+
+class node():
 
   def __init__(self, identity, label, parents, children):
     '''
@@ -105,7 +116,7 @@ class node:
     res.parents, res.children = res.children, res.parents
     return res
 
-class open_digraph: # for open directed graph
+class open_digraph(open_digraph_tools_mx,open_digraph_getters_setters_mx,open_digraph_advanced_mx,open_digraph_degree_mx,open_digraph_composition_mx): # for open directed graph
 
   def __init__(self, inputs, outputs, nodes):
     '''
@@ -140,45 +151,16 @@ class open_digraph: # for open directed graph
       #outputs : copy of the open_digraph
       return open_digraph(self.inputs.copy(),self.outputs.copy(),[node.copy() for node in self.nodes.values()])
 
-  #getters
-  def get_input_ids(self): #return la liste des ID des noeuds d'entrée (int list)
-    return self.inputs
+  def add_node(self, label='', parents=[],children=[]):#ajoute un noeud (avec label) au graphe avec un nouvel id
+    newid = self.new_id()
+    n0 = node(newid, label, [], [])
+    self.nodes[newid] = n0
+    for element in parents:
+      self.add_edge(element,newid)
+    self.add_edges(newid,children)
+    return newid
 
-  def get_output_ids(self): #return la liste des ID des noeuds de sortie (int list)
-    return self.outputs
-
-  def get_id_node_map(self): #return un dictionnaire donc les clés sont les ID, et les valeurs les noeuds
-    return self.nodes        #({int:node})
-
-  def get_nodes(self): #return l'ensemble des noeuds d'un graph (node list)
-    return [node for node in self.nodes.values()]
-
-  def get_node_ids(self):#return la liste des ID des noeuds du graph (int list)
-    return [id for id in self.nodes.keys()]
-
-  def get_node_by_id(self, id):#input : ID (int)
-    return self.nodes.get(id)
-
-  def get_nodes_by_ids(self, listid): #input : liste d'ID (int list)
-                                      #return la liste des noeuds dont l'ID est donné en Input (node List)
-    return [self.nodes.get(id) for id in listid]
-  #getters fin
-  #/////////////////////
-  #setters
-
-  def set_input_ids(self, ids): #@param : entiers représentant les ID (int list)
-    self.inputs = ids 
-
-  def set_output_ids(self, ids): #@param : entiers représentant les ID (int list)
-    self.outputs = ids
-
-  def add_input_id(self, id): #@param:  entier étant l'ID à ajouter (int)
-    self.inputs.append(id)
-
-  def add_output_id(self, id): #@param:  entier étant l'ID à ajouter (int)
-    self.outputs.append(id)
-  #setters fin
-  #/////////////////////
+  
   def new_id(self): #renvoie un id non utilisé dans le graphe.(choisit le + petit)
     liste = self.get_node_ids()
     if(len(liste)==0):
@@ -192,46 +174,6 @@ class open_digraph: # for open directed graph
         tmp += 1
       else:
         return tmp
-
-  def add_edge(self, src, tgt): #ajoute une arête du noeud d’id src au noeud d’id tgt /!\ ERREUR ENONCÉ
-    self.get_node_by_id(src).add_child_id(tgt) #bisect.insort(self.get_node_by_id(src).children,get_id(tgt)) #self.get_node_by_id(src).add_child_id(tgt)
-    self.get_node_by_id(tgt).add_parent_id(src) #bisect.insort(self.get_node_by_id(tgt).parents,get_id(src))
-
-  def add_edges(self, src, list_tgt): #ajoute des arêtes du noeud d’id src aux noeud d’id de la listtgt
-    for tgt in list_tgt:
-      self.get_node_by_id(src).add_child_id(tgt) #bisect.insort(self.get_node_by_id(src).children,get_id(tgt))
-      self.get_node_by_id(tgt).add_parent_id(src)#bisect.insort(self.get_node_by_id(tgt).parents,get_id(src))
-
-  def add_node(self, label, parents,children):#ajoute un noeud (avec label) au graphe avec un nouvel id
-    newid = self.new_id()
-    self.nodes[newid] = node(newid, label, [], [])
-    for element in parents:
-      self.add_edge(element,newid)
-    self.add_edges(newid,children)
-    return newid
-
-  def remove_edge(self, src, tgt): #supprime une arête du noeud src au noeud tgt
-    self.nodes[src].children.remove(tgt)
-    self.nodes[tgt].parents.remove(src)
-  
-  def remove_node_by_id(self, id):#*
-    x = self.nodes.pop(id)
-    for element in self.get_node_ids():
-      self.get_node_by_id(element).remove_parent_id_all(id)
-      self.get_node_by_id(element).remove_child_id_all(id)
-    while id in self.get_input_ids():
-      self.get_input_ids().remove(id)
-    while id in self.get_output_ids():
-      self.get_output_ids().remove(id)
-
-  
-  def remove_edges(self, listsrctgt):#supprime une arêtes de chaque paire de noeuds (src,tgt) de la liste @param
-    for index, tuple in enumerate(listsrctgt):
-      self.remove_edge(tuple[0],tuple[1])
-  
-  def remove_node_by_ids(self,listid):#*
-    for id in listid:
-      self.remove_node_by_id(id)
 
   def is_well_formed(self):
     nodeListId = self.get_node_ids()
@@ -324,24 +266,6 @@ class open_digraph: # for open directed graph
         adjMatrix[node.get_id()][childId] = adjMatrix[node.get_id()][childId] + 1
     return adjMatrix
 
-  def max_indegree(self): #retourne le degré entrant maximal du graphe
-    return max([node.indegree() for node in self.get_nodes()])
-
-  def max_outdegree(self): #retourne le degré sortant maximal du graphe
-    return max([node.outdegree() for node in self.get_nodes()])
-  
-  def max_degree(self): #retourne le degré maximal du graphe
-    return max([node.degree() for node in self.get_nodes()])
-
-  def min_indegree(self):  #retourne le degré entrant minimal du graphe
-    return min([node.indegree() for node in self.get_nodes()])
-
-  def min_outdegree(self): #retourne le degré sortant minimal du graphe
-    return min([node.outdegree() for node in self.get_nodes()])
-  
-  def min_degree(self): #retourne le degré  minimal du graphe
-    return min([node.degree() for node in self.get_nodes()])
-
   def is_cyclic(self): #test de cyclicité
     if(self.get_nodes() == []):
         return False
@@ -364,184 +288,6 @@ class open_digraph: # for open directed graph
   def max_id(self): #retourne l'id max du graphe
     return max(self.get_node_ids())
 
-  def shift_indices (self,n):
-    dict = {}
-    l = len(self.get_nodes())
-    for i in range(1,l+1):
-      node = self.get_nodes()[l-i]
-      node.increment(n)
-      #node.change_id(node.get_id(),node.get_id()+n)
-    for i in range(l):
-      node = self.get_nodes()[i]
-      dict[node.get_id()] = node
-    self.nodes = dict
-    #incrément de input
-    for i in range(len(self.get_input_ids())):
-      self.get_input_ids()[i] += n
-    #incrément de output
-    for i in range(len(self.get_output_ids())):
-      self.get_output_ids()[i] += n
-  
-  def iparallel(self,g): #ajoute g à self (modifie self)
-    self.shift_indices(self.max_id()-g.min_id()+1)
-    self.inputs += g.inputs
-    self.outputs += g.outputs
-    self.nodes = {**self.nodes, **g.nodes}
-  
-  def parallel(self,g): #ajoute g à self (sans modification)
-    res = self.copy()
-    res.iparallel(g)
-    return res
-
-  def icompose(self, g): #composition séquentielle de self et g (modifie self)
-    #test
-    if(len(self.get_input_ids()) != len(g.get_output_ids())):
-      raise NameError('entrée et sortie incompatibles')
-    g.shift_indices(self.max_id()-g.min_id()+1)
-    self.nodes = {**self.nodes, **g.nodes}
-    self.inputs = g.inputs
-    for i in range(len(g.outputs)):
-      self.add_edge(g.outputs[i],self.inputs[i])
-  
-  def compose(self,g): #composition séquentielle de self et g (sans modification)
-    res = self.copy()
-    res.icompose(g)
-    return res
-  
-  def inverse(self):
-    res = self.copy()
-    for id in res.get_node_ids():
-      res.nodes[id] = res.nodes[id].inverse()
-    res.inputs, res.outputs = res.outputs, res.inputs
-    return res
-
-  def DFS(self,node,see,act,dict,toSee): 
-    dict[node] = act
-    see[node] = True
-    toSee.remove(node)
-    for i in self.get_node_by_id(node).get_children_ids():
-      if(not see[i]):
-        self.DFS(i,see,act,dict,toSee)
-    for i in self.get_node_by_id(node).get_parents_ids():
-      if(not see[i]):
-        self.DFS(i,see,act,dict,toSee)
-    
-  def connected_components(self): #renvoie le nombre de composantes connexes, et un dictionnaire qui associe `a chaque id de noeuds du graphe un int qui correspond `a une composante connexe
-    dict = {}
-    see = {}
-    act = 0
-    nbcc = 0
-    toSee = self.get_node_ids().copy()
-    for i in toSee:
-      see[i] = False
-    while(toSee != []):
-      self.DFS(toSee[0],see,act,dict,toSee)
-      act += 1
-      nbcc += 1
-    return dict
-
-  def dijkstra(self,src,direction=None, tgt=None):
-    Q = [src]
-    dist = {src:0}
-    prev = {}
-    while Q != []:
-      u = min(Q , key = lambda x : dist[x])
-      Q.remove(u)
-      if u == tgt:
-        return dist, prev
-      if(direction==-1):
-        neighbours = self.get_node_by_id(u).get_parents_ids() 
-      elif(direction== 1):
-        neighbours = self.get_node_by_id(u).get_children_ids() 
-      else:
-        neighbours =  self.get_node_by_id(u).get_parents_ids()+self.get_node_by_id(u).get_children_ids() 
-      for v in neighbours:
-        if not v in dist.keys():
-          Q.append(v)
-        if (not v in dist.keys()) or (dist[v] > dist[u]+1):
-          dist[v] = dist[u]+1
-          prev[v] = u
-    return dist,prev
-
-  def shortest_path(self, u, v):
-    if(u == v):
-      return [u]
-    dist, prev = self.dijkstra(u, tgt=v)
-    node = prev[v]
-    path = [v]
-    while node != u:
-      path = [node] + path
-      node = prev[node] 
-    return [u] + path
-
-  def common_ancestors_dist(self, node1, node2):
-    dist1, prev1, = self.dijkstra(node1, direction = -1)
-    dist2, prev2, = self.dijkstra(node2, direction = -1)
-    res = {}
-    for ancestor in dist1.keys():
-      if ancestor in dist2.keys():
-        res[ancestor] = (dist1[ancestor], dist2[ancestor])
-    return res
-
-  def tri_topologique(self):#renvoie un tableau de tableaux d'id des noeuds
-    g = self.copy()
-    cpt = 0
-    res = []
-    while(g.get_nodes() != []):
-      tmp = []
-      for node in g.get_nodes():
-        if(node.indegree() == 0):
-          tmp.append(node.get_id())
-      g.remove_node_by_ids(tmp)
-      if tmp == []:
-        raise NameError('ERROR : g is cyclic')
-      res.append(tmp)
-      cpt += 1
-    return res
-
-  def node_prof(self, node):#prend en paramètre un noeud et renvoie sa profondeur (int)
-    tmp = self.tri_topologique()
-    for i in range(len(tmp)):
-      if node.get_id() in tmp[i]:
-        return i
-    raise NameError('ERROR : node not in graph')
-
-  def graph_prof(self):
-    return len(self.tri_topologique()) - 1
-  
-  def longest_path(self, u, v):
-    if(u == v):
-      return 0, [u]
-    i = self.node_prof(self.nodes[u])
-    n = self.graph_prof()
-    dist = {u: 0}
-    prev = {}
-    tri_topologique = self.tri_topologique()
-    lk = tri_topologique[i]
-    for j in range(i+1, n+1):
-      for w in tri_topologique[j]:
-        tmp = -1
-        biggestancestor = None
-        for parent in self.nodes[w].get_parents_ids():
-          if parent in dist.keys():
-            if dist[parent]> tmp:
-              tmp = dist[parent]
-              biggestancestor = parent
-        if tmp > -1:
-          dist[w] = tmp + 1
-          prev[w] = biggestancestor
-        if w == v:
-          break
-    if v in dist.keys():
-      res = dist[v]
-      node = prev[v]
-      path = [v]
-      while node != u:
-        path = [node] + path
-        node = prev[node] 
-      return dist[v], [u] + path
-    else:
-      raise NameError('ERROR : v not in dist.keys()')
 
   def fusion(self, a, b):#a, b : deux id de noeuds à fusionner
     newid = a
@@ -576,9 +322,6 @@ class open_digraph: # for open directed graph
         if(self.outputs[i] == b):
           self.outputs[i] = a
     self.remove_node_by_id(b)
-
-
-
 
 
 
