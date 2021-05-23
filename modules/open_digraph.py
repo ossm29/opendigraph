@@ -346,11 +346,11 @@ class open_digraph: # for open directed graph
     if(self.get_nodes() == []):
         return False
     else:
+      g = self.copy()
       flag = False
       for node in self.get_nodes():
         if(node.outdegree() == 0):
           flag = True
-          g = self.copy()
           g.remove_node_by_id(node.get_id())
           break
       if(flag):
